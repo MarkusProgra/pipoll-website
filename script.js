@@ -224,6 +224,65 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
     document.head.appendChild(rippleStyle);
 
+    // Number counting animation for stats
+    const animateCounters = () => {
+        const statValues = document.querySelectorAll('.stat-value[data-count]');
+
+        statValues.forEach(el => {
+            const rect = el.getBoundingClientRect();
+            const isInView = rect.top < window.innerHeight && rect.bottom > 0;
+
+            if (isInView && !el.classList.contains('counted')) {
+                el.classList.add('counted');
+
+                const target = parseInt(el.getAttribute('data-count'));
+                const duration = 2000;
+                const start = performance.now();
+
+                const formatNumber = (num) => {
+                    if (num >= 1000000) return '$' + (num / 1000000).toFixed(1) + 'M+';
+                    if (num >= 1000) return (num / 1000).toFixed(0) + 'K+';
+                    return num.toString();
+                };
+
+                const easeOutQuart = (t) => 1 - Math.pow(1 - t, 4);
+
+                const animate = (currentTime) => {
+                    const elapsed = currentTime - start;
+                    const progress = Math.min(elapsed / duration, 1);
+                    const easedProgress = easeOutQuart(progress);
+                    const current = Math.floor(target * easedProgress);
+
+                    el.textContent = formatNumber(current);
+
+                    if (progress < 1) {
+                        requestAnimationFrame(animate);
+                    } else {
+                        el.textContent = formatNumber(target);
+                    }
+                };
+
+                requestAnimationFrame(animate);
+            }
+        });
+    };
+
+    // Trigger counter animation on scroll
+    let countersInitialized = false;
+    const counterObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting && !countersInitialized) {
+                countersInitialized = true;
+                animateCounters();
+            }
+        });
+    }, { threshold: 0.5 });
+
+    const statsElement = document.querySelector('.hero-stats');
+    if (statsElement) {
+        counterObserver.observe(statsElement);
+    }
+
     // Console message for developers
     console.log('%c🚀 Pipoll', 'font-size: 24px; font-weight: bold; color: #9D69CE;');
     console.log('%cInvest on humans.', 'font-size: 14px; color: #FFA2F0;');
