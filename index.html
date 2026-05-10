@@ -108,23 +108,37 @@
                 </div>
             </div>
 
-            <!-- Compact mobile stats row -->
-            <div class="hero-stats-compact">
-                <div class="hero-stat">
-                    <div class="stat-value gradient-text" data-count="10000">10K+</div>
-                    <div class="stat-label">Investors</div>
-                </div>
-                <div class="hero-stat-divider"></div>
-                <div class="hero-stat">
-                    <div class="stat-value gradient-text" data-count="2000000">$2M+</div>
-                    <div class="stat-label">Value</div>
-                </div>
-                <div class="hero-stat-divider"></div>
-                <div class="hero-stat">
-                    <div class="stat-value gradient-text" data-count="500000">500K+</div>
-                    <div class="stat-label">Habits</div>
-                </div>
-            </div>
+<style>
+/* Hide by default (desktop) */
+.hero-stats-compact {
+    display: none;
+}
+
+/* Show only on mobile */
+@media (max-width: 768px) {
+    .hero-stats-compact {
+        display: flex;
+    }
+}
+</style>
+
+<!-- Compact mobile stats row -->
+<div class="hero-stats-compact">
+    <div class="hero-stat">
+        <div class="stat-value gradient-text" data-count="10000">10K+</div>
+        <div class="stat-label">Investors</div>
+    </div>
+    <div class="hero-stat-divider"></div>
+    <div class="hero-stat">
+        <div class="stat-value gradient-text" data-count="2000000">$2M+</div>
+        <div class="stat-label">Value</div>
+    </div>
+    <div class="hero-stat-divider"></div>
+    <div class="hero-stat">
+        <div class="stat-value gradient-text" data-count="500000">500K+</div>
+        <div class="stat-label">Habits</div>
+    </div>
+</div>
         </div>
         <div class="hero-visual">
             <div class="phone-showcase">
