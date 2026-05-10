@@ -269,19 +269,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Trigger counter animation on scroll
     let countersInitialized = false;
-    const counterObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting && !countersInitialized) {
-                countersInitialized = true;
-                animateCounters();
-            }
-        });
-    }, { threshold: 0.5 });
+    const animateCountersOnScroll = () => {
+        if (countersInitialized) return;
 
-    const statsElement = document.querySelector('.hero-stats');
-    if (statsElement) {
-        counterObserver.observe(statsElement);
-    }
+        const statsElement = document.querySelector('.hero-stats') || document.querySelector('.hero-stats-compact');
+        if (!statsElement) return;
+
+        const rect = statsElement.getBoundingClientRect();
+        const isInView = rect.top < window.innerHeight * 0.8;
+
+        if (isInView) {
+            countersInitialized = true;
+            animateCounters();
+        }
+    };
+
+    // Check on load and scroll
+    window.addEventListener('scroll', animateCountersOnScroll);
+    setTimeout(animateCountersOnScroll, 100);
 
     // Console message for developers
     console.log('%c🚀 Pipoll', 'font-size: 24px; font-weight: bold; color: #9D69CE;');
