@@ -578,9 +578,9 @@ img {
     background: rgba(255, 255, 255, 0.1);
 }
 
-/* Compact mobile stats row */
+/* Compact mobile stats row - hidden on desktop */
 .hero-stats-compact {
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: center;
     gap: 1.5rem;
@@ -1501,29 +1501,33 @@ section {
         gap: 2rem;
     }
 
+    /* Hero title BIGGER than subtitle on mobile */
     .hero-title {
-        font-size: 2.25rem;
+        font-size: 2.75rem;
         letter-spacing: -0.02em;
+        margin-bottom: 0.5rem;
     }
 
     .hero-subtitle {
-        font-size: 1rem;
-        line-height: 1.6;
+        font-size: 0.9rem;
+        line-height: 1.5;
+        color: var(--gray-500);
     }
 
     .hero-badge {
         padding: 0.375rem 0.75rem;
-        font-size: 0.75rem;
+        font-size: 0.7rem;
+        margin-bottom: 0.75rem;
     }
 
-    /* Compact stats row for mobile */
+    /* Compact stats row for mobile - show only on mobile */
     .hero-stats {
         display: none;
     }
 
     .hero-stats-compact {
         display: flex;
-        margin-top: 0.75rem;
+        margin-top: 1rem;
         padding: 0.5rem 0.75rem;
     }
 
@@ -1559,12 +1563,19 @@ section {
 
     .section-tag {
         padding: 0.375rem 0.875rem;
-        font-size: 0.75rem;
+        font-size: 0.7rem;
+        margin-bottom: 0.75rem;
     }
 
+    /* Section titles BIGGER than subtitles */
     .section-title {
-        font-size: 1.5rem;
+        font-size: 1.75rem;
         line-height: 1.3;
+    }
+
+    .section-header p {
+        font-size: 0.875rem;
+        color: var(--gray-500);
     }
 
     /* Manifesto - compact */
@@ -1577,7 +1588,7 @@ section {
     }
 
     .manifesto-text {
-        font-size: 0.95rem;
+        font-size: 0.9rem;
         line-height: 1.7;
     }
 
@@ -1644,11 +1655,12 @@ section {
     }
 
     .cta-title {
-        font-size: 1.5rem;
+        font-size: 1.75rem;
     }
 
     .cta-subtitle {
-        font-size: 0.95rem;
+        font-size: 0.9rem;
+        color: var(--gray-500);
     }
 
     .btn-large {
@@ -1677,6 +1689,44 @@ section {
 
     .footer-bottom p {
         font-size: 0.75rem;
+    }
+
+    /* Fade-in from top animation for mobile */
+    .animate-from-top {
+        opacity: 0;
+        transform: translateY(-20px);
+        animation: fadeInFromTop 0.6s ease forwards;
+    }
+
+    @keyframes fadeInFromTop {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .hero-content .hero-badge {
+        animation-delay: 0.1s;
+    }
+
+    .hero-title {
+        animation-delay: 0.2s;
+    }
+
+    .hero-subtitle {
+        animation-delay: 0.3s;
+    }
+
+    .hero-cta {
+        animation-delay: 0.4s;
+    }
+
+    .hero-stats-compact {
+        animation-delay: 0.5s;
     }
 }
 
