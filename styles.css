@@ -1503,13 +1503,13 @@ section {
 
     /* Hero title BIGGER than subtitle on mobile */
     .hero-title {
-        font-size: 2.75rem;
+        font-size: 3.5rem;
         letter-spacing: -0.02em;
         margin-bottom: 0.5rem;
     }
 
     .hero-subtitle {
-        font-size: 0.9rem;
+        font-size: 0.78rem;
         line-height: 1.5;
         color: var(--gray-500);
     }
@@ -1545,6 +1545,8 @@ section {
         height: 440px;
         border-radius: 36px;
         padding: 8px;
+        margin-top: 2rem;
+        filter: drop-shadow(0 24px 48px rgba(157, 105, 206, 0.45)) drop-shadow(0 8px 24px rgba(0, 0, 0, 0.6));
     }
 
     .phone-frame.small {
