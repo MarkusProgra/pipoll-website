@@ -583,19 +583,19 @@ img {
     display: none;
     align-items: center;
     justify-content: center;
-    gap: 1.5rem;
+    gap: 0;
     padding: 0.75rem 1rem;
     background: rgba(157, 105, 206, 0.08);
     border: 1px solid rgba(157, 105, 206, 0.2);
-    border-radius: var(--radius-full);
+    border-radius: var(--radius-xl);
     margin-top: 1rem;
 }
 
 .hero-stats-compact .hero-stat {
     display: flex;
-    flex-direction: row;
-    align-items: baseline;
-    gap: 0.25rem;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.15rem;
 }
 
 .hero-stats-compact .stat-value {
@@ -613,8 +613,9 @@ img {
 
 .hero-stats-compact .hero-stat-divider {
     width: 1px;
-    height: 24px;
+    height: 44px;
     background: rgba(157, 105, 206, 0.3);
+    margin: 0 1rem;
 }
 
 /* Stats counting animation */
@@ -1374,7 +1375,7 @@ section {
     .hero {
         grid-template-columns: 1fr;
         text-align: center;
-        padding-top: 6rem;
+        padding: 6rem 1.5rem 4rem;
         gap: 3rem;
     }
 
@@ -1471,12 +1472,12 @@ section {
 @media (max-width: 640px) {
     /* Navigation - more compact */
     .navbar {
-        top: 8px;
+        top: 12px;
         width: calc(100% - 16px);
     }
 
     .nav-container {
-        padding: 0.5rem 0.875rem;
+        padding: 0.9rem 1.25rem;
     }
 
     .logo-img {
@@ -1485,7 +1486,7 @@ section {
 
     /* Mobile menu - compact */
     .mobile-menu {
-        top: 70px;
+        top: 80px;
         padding: 1rem;
         gap: 1rem;
     }
@@ -1497,7 +1498,7 @@ section {
 
     .hero {
         min-height: auto;
-        padding: 5rem 1rem 2rem;
+        padding: 7rem 1.5rem 2rem;
         gap: 2rem;
     }
 
@@ -1528,7 +1529,7 @@ section {
     .hero-stats-compact {
         display: flex;
         margin-top: 1rem;
-        padding: 0.5rem 0.75rem;
+        padding: 0.75rem 1rem;
     }
 
     .hero-stat {
@@ -1556,7 +1557,7 @@ section {
 
     /* Sections - more compact */
     section {
-        padding: 3rem 1rem;
+        padding: 3rem 1.5rem;
     }
 
     .section-header {
