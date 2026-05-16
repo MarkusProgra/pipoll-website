@@ -387,4 +387,216 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('%c\u{1F680} Pipoll', 'font-size: 24px; font-weight: bold; color: #9D69CE;');
     console.log('%cInvest on humans.', 'font-size: 14px; color: #FFA2F0;');
     console.log('%cBuilt with \u2764\uFE0F by Markus & Oliver', 'font-size: 12px; color: #737373;');
+
+
+    // ========================================
+    // Mobile Card Swiper
+    // ========================================
+    function initCardSwiper() {
+        const cardStack = document.getElementById('cardStack');
+        if (!cardStack) return;
+        
+        const dots = document.querySelectorAll('#cardDots .card-dot');
+        let cards = Array.from(cardStack.querySelectorAll('.swipe-card'));
+        let currentIndex = 0;
+        let totalCards = cards.length;
+        let isDragging = false;
+        let startX = 0;
+        let startY = 0;
+        let currentX = 0;
+        let isAnimating = false;
+        
+        // Get the top card (highest z-index, data-card-index="0")
+        function getTopCard() {
+            return cardStack.querySelector('.swipe-card[data-card-index="0"]');
+        }
+        
+        function updateDots() {
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === currentIndex);
+            });
+        }
+        
+        function reindexCards() {
+            const remainingCards = Array.from(cardStack.querySelectorAll('.swipe-card:not(.fly-out-left):not(.fly-out-right)'));
+            remainingCards.forEach((card, i) => {
+                card.setAttribute('data-card-index', i);
+                card.style.zIndex = remainingCards.length - i;
+                // Remove any inline transform except for stacking effect
+                if (i > 0) {
+                    const scale = 1 - (i * 0.05);
+                    const translateY = i * 8;
+                    card.style.transform = `scale(${scale}) translateY(${translateY}px)`;
+                } else {
+                    card.style.transform = '';
+                }
+            });
+        }
+        
+        function handleSwipe(direction) {
+            if (isAnimating) return;
+            isAnimating = true;
+            
+            const topCard = getTopCard();
+            if (!topCard) return;
+            
+            // Remove hint class
+            topCard.classList.remove('peek-hint');
+            
+            // Add fly out animation
+            topCard.classList.add(direction === 'left' ? 'fly-out-left' : 'fly-out-right');
+            
+            // After animation, move card behind stack or remove from view
+            setTimeout(() => {
+                topCard.style.opacity = '0';
+                topCard.style.pointerEvents = 'none';
+                topCard.setAttribute('data-card-index', totalCards);
+                topCard.style.zIndex = '0';
+                topCard.classList.remove('fly-out-left', 'fly-out-right', 'is-swiping');
+                topCard.style.transform = '';
+                
+                // Move swiped card to bottom of stack
+                cardStack.insertBefore(topCard, cardStack.firstChild);
+                
+                // Re-show after reposition
+                setTimeout(() => {
+                    topCard.style.opacity = '';
+                    topCard.style.pointerEvents = '';
+                }, 50);
+                
+                // Reindex and update
+                reindexCards();
+                
+                currentIndex = (currentIndex + 1) % totalCards;
+                updateDots();
+                
+                isAnimating = false;
+            }, 420);
+        }
+        
+        // Touch events
+        function onTouchStart(e) {
+            if (isAnimating) return;
+            const topCard = getTopCard();
+            if (!topCard || !topCard.contains(e.target) && e.target !== topCard) return;
+            
+            const touch = e.touches[0];
+            startX = touch.clientX;
+            startY = touch.clientY;
+            currentX = 0;
+            isDragging = true;
+            topCard.classList.add('is-swiping');
+        }
+        
+        function onTouchMove(e) {
+            if (!isDragging || isAnimating) return;
+            const topCard = getTopCard();
+            if (!topCard) return;
+            
+            const touch = e.touches[0];
+            currentX = touch.clientX - startX;
+            const currentY = touch.clientY - startY;
+            
+            // Only handle horizontal swipes
+            if (Math.abs(currentX) < Math.abs(currentY) && Math.abs(currentX) < 10) return;
+            
+            e.preventDefault();
+            const rotation = currentX * 0.12;
+            topCard.style.transform = `translateX(${currentX}px) rotate(${rotation}deg)`;
+            topCard.style.transition = 'none';
+        }
+        
+        function onTouchEnd(e) {
+            if (!isDragging) return;
+            isDragging = false;
+            
+            const topCard = getTopCard();
+            if (!topCard) return;
+            topCard.classList.remove('is-swiping');
+            
+            const threshold = 80;
+            
+            if (currentX < -threshold) {
+                handleSwipe('left');
+            } else if (currentX > threshold) {
+                handleSwipe('right');
+            } else {
+                // Snap back
+                topCard.style.transition = 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                topCard.style.transform = '';
+                setTimeout(() => {
+                    topCard.style.transition = '';
+                }, 400);
+            }
+        }
+        
+        // Mouse events for desktop testing
+        let mouseDown = false;
+        
+        function onMouseDown(e) {
+            if (isAnimating) return;
+            const topCard = getTopCard();
+            if (!topCard || !topCard.contains(e.target)) return;
+            startX = e.clientX;
+            currentX = 0;
+            mouseDown = true;
+            isDragging = true;
+            topCard.classList.add('is-swiping');
+        }
+        
+        function onMouseMove(e) {
+            if (!mouseDown || !isDragging || isAnimating) return;
+            const topCard = getTopCard();
+            if (!topCard) return;
+            
+            currentX = e.clientX - startX;
+            const rotation = currentX * 0.08;
+            topCard.style.transform = `translateX(${currentX}px) rotate(${rotation}deg)`;
+            topCard.style.transition = 'none';
+        }
+        
+        function onMouseUp(e) {
+            if (!mouseDown) return;
+            mouseDown = false;
+            isDragging = false;
+            
+            const topCard = getTopCard();
+            if (!topCard) return;
+            topCard.classList.remove('is-swiping');
+            
+            const threshold = 80;
+            
+            if (currentX < -threshold) {
+                handleSwipe('left');
+            } else if (currentX > threshold) {
+                handleSwipe('right');
+            } else {
+                topCard.style.transition = 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                topCard.style.transform = '';
+                setTimeout(() => {
+                    topCard.style.transition = '';
+                }, 400);
+            }
+        }
+        
+        // Attach events
+        cardStack.addEventListener('touchstart', onTouchStart, { passive: false });
+        cardStack.addEventListener('touchmove', onTouchMove, { passive: false });
+        cardStack.addEventListener('touchend', onTouchEnd);
+        cardStack.addEventListener('mousedown', onMouseDown);
+        document.addEventListener('mousemove', onMouseMove);
+        document.addEventListener('mouseup', onMouseUp);
+        
+        // Initial peek animation on first card
+        const firstTopCard = getTopCard();
+        if (firstTopCard) {
+            firstTopCard.classList.add('peek-hint');
+        }
+        
+        updateDots();
+    }
+    
+    // Initialize card swiper
+    initCardSwiper();
+
 });
