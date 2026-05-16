@@ -32,6 +32,7 @@
                 <a href="#how-it-works">How it works</a>
                 <a href="#features">Features</a>
                 <a href="contact.html">Contact</a>
+                <a href="blog.html">Blog</a>
                 <div class="nav-dropdown">
                     <span class="dropdown-trigger">Legal ▾</span>
                     <div class="dropdown-menu">
@@ -55,6 +56,7 @@
         <a href="#how-it-works">How it works</a>
         <a href="#features">Features</a>
         <a href="contact.html">Contact</a>
+        <a href="blog.html">Blog</a>
         <div class="mobile-dropdown">
             <span class="mobile-dropdown-trigger">Legal ▾</span>
             <div class="mobile-dropdown-menu">
@@ -150,7 +152,8 @@
             </div>
         </div>
         <div class="hero-visual">
-            <div class="phone-showcase">
+            <!-- Desktop: Phone Showcase (hidden on mobile) -->
+            <div class="phone-showcase desktop-only">
                 <!-- Main Phone (Center) -->
                 <div class="phone-mockup phone-main">
                     <div class="phone-frame">
@@ -175,6 +178,39 @@
                             <img src="screenshot-market.png" alt="Market Screen" class="app-screenshot">
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <!-- Mobile: Swipeable Card Stack (hidden on desktop) -->
+            <div class="card-swiper mobile-only" id="cardSwiper">
+                <div class="card-stack" id="cardStack">
+                    <div class="swipe-card" data-card-index="4" style="z-index:1;">
+                        <img src="3.png" alt="App Screen 3" draggable="false">
+                    </div>
+                    <div class="swipe-card" data-card-index="3" style="z-index:2;">
+                        <img src="5.png" alt="App Screen 5" draggable="false">
+                    </div>
+                    <div class="swipe-card" data-card-index="2" style="z-index:3;">
+                        <img src="2.png" alt="App Screen 2" draggable="false">
+                    </div>
+                    <div class="swipe-card" data-card-index="1" style="z-index:4;">
+                        <img src="4.png" alt="App Screen 4" draggable="false">
+                    </div>
+                    <div class="swipe-card top-card" data-card-index="0" style="z-index:5;">
+                        <img src="1.png" alt="App Screen 1" draggable="false">
+                    </div>
+                </div>
+                <div class="swipe-hint">
+                    <span class="swipe-hint-arrow">&#8592;</span>
+                    <span class="swipe-hint-text">swipe to reveal</span>
+                    <span class="swipe-hint-arrow">&#8594;</span>
+                </div>
+                <div class="card-progress-dots" id="cardDots">
+                    <span class="card-dot active"></span>
+                    <span class="card-dot"></span>
+                    <span class="card-dot"></span>
+                    <span class="card-dot"></span>
+                    <span class="card-dot"></span>
                 </div>
             </div>
         </div>
