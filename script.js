@@ -3,7 +3,10 @@
 // ========================================
 
 document.addEventListener('DOMContentLoaded', () => {
+
+    // ========================================
     // Mobile Menu Toggle
+    // ========================================
     const navToggle = document.querySelector('.nav-toggle');
     const mobileMenu = document.querySelector('.mobile-menu');
 
@@ -40,42 +43,50 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Navbar hide/show on scroll with bounce
+    // ========================================
+    // Navbar hide/show on scroll
+    // ========================================
     const navbar = document.querySelector('.navbar');
     let lastScroll = 0;
     let ticking = false;
 
-    window.addEventListener('scroll', () => {
-        if (!ticking) {
-            window.requestAnimationFrame(() => {
-                const currentScroll = window.pageYOffset;
+    if (navbar) {
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    const currentScroll = window.pageYOffset;
 
-                if (currentScroll > lastScroll && currentScroll > 100) {
-                    // Scroll down - hide navbar
-                    navbar.classList.add('hidden');
-                    navbar.classList.remove('scrolled');
-                } else if (currentScroll < lastScroll) {
-                    // Scroll up - show navbar
-                    navbar.classList.remove('hidden');
-                    if (currentScroll > 50) {
-                        navbar.classList.add('scrolled');
+                    if (currentScroll > lastScroll && currentScroll > 100) {
+                        // Scroll down - hide navbar
+                        navbar.classList.add('hidden');
+                        navbar.classList.remove('scrolled');
+                    } else if (currentScroll < lastScroll) {
+                        // Scroll up - show navbar
+                        navbar.classList.remove('hidden');
+                        if (currentScroll > 50) {
+                            navbar.classList.add('scrolled');
+                        }
                     }
-                }
 
-                lastScroll = currentScroll;
-                ticking = false;
-            });
-            ticking = true;
-        }
-    });
+                    lastScroll = currentScroll;
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }, { passive: true });
+    }
 
+    // ========================================
     // Smooth scroll for anchor links
+    // ========================================
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
+            const href = this.getAttribute('href');
+            if (href === '#') return;
             e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
+            const target = document.querySelector(href);
             if (target) {
-                const offsetTop = target.offsetTop - 80;
+                const offsetTop = target.getBoundingClientRect().top + window.pageYOffset - 80;
                 window.scrollTo({
                     top: offsetTop,
                     behavior: 'smooth'
@@ -84,82 +95,105 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // ========================================
     // Intersection Observer for scroll animations
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
+    // ========================================
+    if ('IntersectionObserver' in window) {
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
 
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('animate-in');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-in');
+                }
+            });
+        }, observerOptions);
+
+        // Observe elements for animation
+        const animateElements = document.querySelectorAll(
+            '.feature-card, .step, .hero-content, .hero-visual, .section-header, .cta-content, .manifesto-content, .value-card, .contact-card-large, .faq-item'
+        );
+
+        animateElements.forEach(el => {
+            el.classList.add('animate-ready');
+            observer.observe(el);
+        });
+
+        // Add animation styles dynamically
+        const style = document.createElement('style');
+        style.textContent = `
+            .animate-ready {
+                opacity: 0;
+                transform: translateY(30px);
+                transition: opacity 0.6s ease, transform 0.6s ease;
             }
+
+            .animate-in {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            .feature-card:nth-child(1) { transition-delay: 0.1s; }
+            .feature-card:nth-child(2) { transition-delay: 0.2s; }
+            .feature-card:nth-child(3) { transition-delay: 0.3s; }
+            .feature-card:nth-child(4) { transition-delay: 0.4s; }
+            .feature-card:nth-child(5) { transition-delay: 0.5s; }
+            .feature-card:nth-child(6) { transition-delay: 0.6s; }
+
+            .step:nth-child(1) { transition-delay: 0.1s; }
+            .step:nth-child(2) { transition-delay: 0.2s; }
+            .step:nth-child(3) { transition-delay: 0.3s; }
+            .step:nth-child(4) { transition-delay: 0.4s; }
+
+            .contact-card-large:nth-child(1) { transition-delay: 0.1s; }
+            .contact-card-large:nth-child(2) { transition-delay: 0.2s; }
+            .contact-card-large:nth-child(3) { transition-delay: 0.3s; }
+
+            .faq-item:nth-child(1) { transition-delay: 0.1s; }
+            .faq-item:nth-child(2) { transition-delay: 0.15s; }
+            .faq-item:nth-child(3) { transition-delay: 0.2s; }
+            .faq-item:nth-child(4) { transition-delay: 0.25s; }
+            .faq-item:nth-child(5) { transition-delay: 0.3s; }
+            .faq-item:nth-child(6) { transition-delay: 0.35s; }
+        `;
+        document.head.appendChild(style);
+    } else {
+        // Fallback: show all elements immediately for older browsers
+        document.querySelectorAll('.feature-card, .step, .hero-content, .hero-visual, .section-header, .cta-content, .manifesto-content, .value-card, .contact-card-large, .faq-item').forEach(el => {
+            el.style.opacity = '1';
         });
-    }, observerOptions);
+    }
 
-    // Observe elements for animation
-    const animateElements = document.querySelectorAll(
-        '.feature-card, .step, .hero-content, .hero-visual, .section-header, .cta-content, .manifesto-content, .value-card, .contact-card-large, .faq-item'
-    );
-
-    animateElements.forEach(el => {
-        el.classList.add('animate-ready');
-        observer.observe(el);
-    });
-
-    // Add animation styles dynamically
-    const style = document.createElement('style');
-    style.textContent = `
-        .animate-ready {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
+    // ========================================
+    // Parallax effect - desktop only
+    // ========================================
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+    if (!isMobile) {
+        const orbs = document.querySelectorAll('.bg-orb');
+        if (orbs.length > 0) {
+            let parallaxTicking = false;
+            window.addEventListener('scroll', () => {
+                if (!parallaxTicking) {
+                    window.requestAnimationFrame(() => {
+                        const scrolled = window.pageYOffset;
+                        orbs.forEach((orb, index) => {
+                            const speed = 0.1 + (index * 0.05);
+                            orb.style.transform = `translateY(${scrolled * speed}px)`;
+                        });
+                        parallaxTicking = false;
+                    });
+                    parallaxTicking = true;
+                }
+            }, { passive: true });
         }
+    }
 
-        .animate-in {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .feature-card:nth-child(1) { transition-delay: 0.1s; }
-        .feature-card:nth-child(2) { transition-delay: 0.2s; }
-        .feature-card:nth-child(3) { transition-delay: 0.3s; }
-        .feature-card:nth-child(4) { transition-delay: 0.4s; }
-        .feature-card:nth-child(5) { transition-delay: 0.5s; }
-        .feature-card:nth-child(6) { transition-delay: 0.6s; }
-
-        .step:nth-child(1) { transition-delay: 0.1s; }
-        .step:nth-child(2) { transition-delay: 0.2s; }
-        .step:nth-child(3) { transition-delay: 0.3s; }
-        .step:nth-child(4) { transition-delay: 0.4s; }
-
-        .contact-card-large:nth-child(1) { transition-delay: 0.1s; }
-        .contact-card-large:nth-child(2) { transition-delay: 0.2s; }
-        .contact-card-large:nth-child(3) { transition-delay: 0.3s; }
-
-        .faq-item:nth-child(1) { transition-delay: 0.1s; }
-        .faq-item:nth-child(2) { transition-delay: 0.15s; }
-        .faq-item:nth-child(3) { transition-delay: 0.2s; }
-        .faq-item:nth-child(4) { transition-delay: 0.25s; }
-        .faq-item:nth-child(5) { transition-delay: 0.3s; }
-        .faq-item:nth-child(6) { transition-delay: 0.35s; }
-    `;
-    document.head.appendChild(style);
-
-    // Parallax effect for background orbs
-    const orbs = document.querySelectorAll('.bg-orb');
-
-    window.addEventListener('scroll', () => {
-        const scrolled = window.pageYOffset;
-
-        orbs.forEach((orb, index) => {
-            const speed = 0.1 + (index * 0.05);
-            orb.style.transform = `translateY(${scrolled * speed}px)`;
-        });
-    });
-
+    // ========================================
     // Avatar stack hover effect
+    // ========================================
     const avatarStack = document.querySelector('.avatar-stack');
     if (avatarStack) {
         const avatars = avatarStack.querySelectorAll('.avatar');
@@ -181,50 +215,66 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Button ripple effect
-    document.querySelectorAll('.btn-primary').forEach(button => {
-        button.addEventListener('click', function(e) {
-            const rect = this.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-
-            const ripple = document.createElement('span');
-            ripple.style.cssText = `
-                position: absolute;
-                background: rgba(255, 255, 255, 0.3);
-                border-radius: 50%;
-                transform: scale(0);
-                animation: ripple 0.6s linear;
-                pointer-events: none;
-                left: ${x}px;
-                top: ${y}px;
-                width: 100px;
-                height: 100px;
-                margin-left: -50px;
-                margin-top: -50px;
-            `;
-
-            this.style.position = 'relative';
-            this.style.overflow = 'hidden';
-            this.appendChild(ripple);
-
-            setTimeout(() => ripple.remove(), 600);
-        });
-    });
-
-    // Add ripple keyframes
-    const rippleStyle = document.createElement('style');
-    rippleStyle.textContent = `
-        @keyframes ripple {
-            to {
-                transform: scale(4);
-                opacity: 0;
+    // ========================================
+    // Button ripple effect - desktop only
+    // ========================================
+    if (!isMobile) {
+        // Add ripple keyframes
+        const rippleStyle = document.createElement('style');
+        rippleStyle.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
             }
-        }
-    `;
-    document.head.appendChild(rippleStyle);
+        `;
+        document.head.appendChild(rippleStyle);
 
+        document.querySelectorAll('.btn-primary:not(.btn-disabled)').forEach(button => {
+            button.addEventListener('click', function(e) {
+                const rect = this.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                const ripple = document.createElement('span');
+                ripple.style.cssText = `
+                    position: absolute;
+                    background: rgba(255, 255, 255, 0.3);
+                    border-radius: 50%;
+                    transform: scale(0);
+                    animation: ripple 0.6s linear;
+                    pointer-events: none;
+                    left: ${x}px;
+                    top: ${y}px;
+                    width: 100px;
+                    height: 100px;
+                    margin-left: -50px;
+                    margin-top: -50px;
+                `;
+
+                this.style.position = 'relative';
+                this.style.overflow = 'hidden';
+                this.appendChild(ripple);
+
+                setTimeout(() => {
+                    if (ripple.parentNode) ripple.remove();
+                }, 600);
+            });
+        });
+    }
+
+    // ========================================
     // Number counting animation for stats
+    // ========================================
+    const formatNumber = (num) => {
+        if (num >= 1000000) return '$' + (num / 1000000).toFixed(1) + 'M+';
+        if (num >= 1000) return (num / 1000).toFixed(0) + 'K+';
+        return num.toString();
+    };
+
+    const easeOutQuart = (t) => 1 - Math.pow(1 - t, 4);
+
     const animateCounters = () => {
         const statValues = document.querySelectorAll('.stat-value[data-count]');
 
@@ -238,14 +288,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 const target = parseInt(el.getAttribute('data-count'));
                 const duration = 2000;
                 const start = performance.now();
-
-                const formatNumber = (num) => {
-                    if (num >= 1000000) return '$' + (num / 1000000).toFixed(1) + 'M+';
-                    if (num >= 1000) return (num / 1000).toFixed(0) + 'K+';
-                    return num.toString();
-                };
-
-                const easeOutQuart = (t) => 1 - Math.pow(1 - t, 4);
 
                 const animate = (currentTime) => {
                     const elapsed = currentTime - start;
@@ -285,11 +327,64 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // Check on load and scroll
-    window.addEventListener('scroll', animateCountersOnScroll);
+    window.addEventListener('scroll', animateCountersOnScroll, { passive: true });
     setTimeout(animateCountersOnScroll, 100);
 
+    // ========================================
+    // Countdown Timer to May 30, 2026
+    // ========================================
+    const LAUNCH_DATE = new Date('2026-05-30T00:00:00');
+
+    const pad = (n) => String(n).padStart(2, '0');
+
+    const updateCountdown = () => {
+        const now = new Date();
+        const diff = LAUNCH_DATE - now;
+
+        if (diff <= 0) {
+            // Launch date reached
+            ['hero-days','hero-hours','hero-mins','hero-secs',
+             'cta-days','cta-hours','cta-mins','cta-secs'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.textContent = '00';
+            });
+            return;
+        }
+
+        const days    = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours   = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+        // Hero countdown
+        const hDays  = document.getElementById('hero-days');
+        const hHours = document.getElementById('hero-hours');
+        const hMins  = document.getElementById('hero-mins');
+        const hSecs  = document.getElementById('hero-secs');
+
+        if (hDays)  hDays.textContent  = pad(days);
+        if (hHours) hHours.textContent = pad(hours);
+        if (hMins)  hMins.textContent  = pad(minutes);
+        if (hSecs)  hSecs.textContent  = pad(seconds);
+
+        // CTA countdown
+        const cDays  = document.getElementById('cta-days');
+        const cHours = document.getElementById('cta-hours');
+        const cMins  = document.getElementById('cta-mins');
+        const cSecs  = document.getElementById('cta-secs');
+
+        if (cDays)  cDays.textContent  = pad(days);
+        if (cHours) cHours.textContent = pad(hours);
+        if (cMins)  cMins.textContent  = pad(minutes);
+        if (cSecs)  cSecs.textContent  = pad(seconds);
+    };
+
+    // Initialize and update every second
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+
     // Console message for developers
-    console.log('%c🚀 Pipoll', 'font-size: 24px; font-weight: bold; color: #9D69CE;');
+    console.log('%c\u{1F680} Pipoll', 'font-size: 24px; font-weight: bold; color: #9D69CE;');
     console.log('%cInvest on humans.', 'font-size: 14px; color: #FFA2F0;');
-    console.log('%cBuilt with ❤️ by Markus & Oliver', 'font-size: 12px; color: #737373;');
+    console.log('%cBuilt with \u2764\uFE0F by Markus & Oliver', 'font-size: 12px; color: #737373;');
 });
