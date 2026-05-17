@@ -353,7 +353,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const days    = Math.floor(diff / (1000 * 60 * 60 * 24));
         const hours   = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const minutes = Math.floor((diff % (1000 * 60)) / (1000 * 60));
         const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
         // Hero countdown
@@ -384,218 +384,218 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(updateCountdown, 1000);
 
     // Console message for developers
-    console.log('%c\u{1F680} Pipoll', 'font-size: 24px; font-weight: bold; color: #9D69CE;');
+    console.log('%c🚀 Pipoll', 'font-size: 24px; font-weight: bold; color: #9D69CE;');
     console.log('%cInvest on humans.', 'font-size: 14px; color: #FFA2F0;');
-    console.log('%cBuilt with \u2764\uFE0F by Markus & Oliver', 'font-size: 12px; color: #737373;');
+    console.log('%cBuilt with ❤️ by Markus & Oliver', 'font-size: 12px; color: #737373;');
 
 
     // ========================================
-    // Mobile Card Swiper
+    // Mobile Card Swiper - Optimized
     // ========================================
     function initCardSwiper() {
         const cardStack = document.getElementById('cardStack');
         if (!cardStack) return;
-        
+
         const dots = document.querySelectorAll('#cardDots .card-dot');
         let cards = Array.from(cardStack.querySelectorAll('.swipe-card'));
         let currentIndex = 0;
         let totalCards = cards.length;
         let isDragging = false;
         let startX = 0;
-        let startY = 0;
         let currentX = 0;
         let isAnimating = false;
-        
-        // Get the top card (highest z-index, data-card-index="0")
+
+        // Get the top card (with top-card class)
         function getTopCard() {
-            return cardStack.querySelector('.swipe-card[data-card-index="0"]');
+            return cardStack.querySelector('.swipe-card.top-card');
         }
-        
+
         function updateDots() {
             dots.forEach((dot, i) => {
                 dot.classList.toggle('active', i === currentIndex);
             });
         }
-        
+
         function reindexCards() {
             const remainingCards = Array.from(cardStack.querySelectorAll('.swipe-card:not(.fly-out-left):not(.fly-out-right)'));
             remainingCards.forEach((card, i) => {
                 card.setAttribute('data-card-index', i);
                 card.style.zIndex = remainingCards.length - i;
-                // Remove any inline transform except for stacking effect
+
+                // Toggle top-card class
+                if (i === 0) {
+                    card.classList.add('top-card');
+                } else {
+                    card.classList.remove('top-card');
+                }
+
+                // Stacking effect for cards behind
                 if (i > 0) {
                     const scale = 1 - (i * 0.05);
-                    const translateY = i * 8;
+                    const translateY = i * 4;
                     card.style.transform = `scale(${scale}) translateY(${translateY}px)`;
                 } else {
                     card.style.transform = '';
                 }
             });
         }
-        
+
         function handleSwipe(direction) {
             if (isAnimating) return;
             isAnimating = true;
-            
+
             const topCard = getTopCard();
             if (!topCard) return;
-            
+
             // Remove hint class
             topCard.classList.remove('peek-hint');
-            
-            // Add fly out animation
+
+            // Add fly out animation class
             topCard.classList.add(direction === 'left' ? 'fly-out-left' : 'fly-out-right');
-            
-            // After animation, move card behind stack or remove from view
+
+            // Wait for animation to complete
             setTimeout(() => {
-                topCard.style.opacity = '0';
-                topCard.style.pointerEvents = 'none';
-                topCard.setAttribute('data-card-index', totalCards);
-                topCard.style.zIndex = '0';
+                // Move swiped card to back of stack
+                cardStack.appendChild(topCard);
+
+                // Clean up classes
                 topCard.classList.remove('fly-out-left', 'fly-out-right', 'is-swiping');
+                topCard.style.opacity = '';
+                topCard.style.pointerEvents = '';
                 topCard.style.transform = '';
-                
-                // Move swiped card to bottom of stack
-                cardStack.insertBefore(topCard, cardStack.firstChild);
-                
-                // Re-show after reposition
-                setTimeout(() => {
-                    topCard.style.opacity = '';
-                    topCard.style.pointerEvents = '';
-                }, 50);
-                
-                // Reindex and update
+
+                // Reindex all cards
                 reindexCards();
-                
+
+                // Update dot indicator
                 currentIndex = (currentIndex + 1) % totalCards;
                 updateDots();
-                
+
                 isAnimating = false;
-            }, 420);
+            }, 300);
         }
-        
+
+        function snapBack(card) {
+            card.style.transition = 'transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)';
+            card.style.transform = '';
+            setTimeout(() => {
+                card.style.transition = '';
+            }, 300);
+        }
+
         // Touch events
         function onTouchStart(e) {
             if (isAnimating) return;
             const topCard = getTopCard();
-            if (!topCard || !topCard.contains(e.target) && e.target !== topCard) return;
-            
+            if (!topCard) return;
+
             const touch = e.touches[0];
             startX = touch.clientX;
-            startY = touch.clientY;
             currentX = 0;
             isDragging = true;
             topCard.classList.add('is-swiping');
+            topCard.classList.remove('peek-hint');
         }
-        
+
         function onTouchMove(e) {
             if (!isDragging || isAnimating) return;
             const topCard = getTopCard();
             if (!topCard) return;
-            
+
             const touch = e.touches[0];
             currentX = touch.clientX - startX;
-            const currentY = touch.clientY - startY;
-            
-            // Only handle horizontal swipes
-            if (Math.abs(currentX) < Math.abs(currentY) && Math.abs(currentX) < 10) return;
-            
-            e.preventDefault();
-            const rotation = currentX * 0.12;
+
+            // Apply transform directly for instant response
+            const rotation = currentX * 0.1;
             topCard.style.transform = `translateX(${currentX}px) rotate(${rotation}deg)`;
-            topCard.style.transition = 'none';
         }
-        
+
         function onTouchEnd(e) {
             if (!isDragging) return;
             isDragging = false;
-            
+
             const topCard = getTopCard();
             if (!topCard) return;
             topCard.classList.remove('is-swiping');
-            
-            const threshold = 80;
-            
+
+            // Lower threshold for easier swiping (was 80px)
+            const threshold = 50;
+
             if (currentX < -threshold) {
                 handleSwipe('left');
             } else if (currentX > threshold) {
                 handleSwipe('right');
             } else {
-                // Snap back
-                topCard.style.transition = 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-                topCard.style.transform = '';
-                setTimeout(() => {
-                    topCard.style.transition = '';
-                }, 400);
+                snapBack(topCard);
             }
         }
-        
+
         // Mouse events for desktop testing
         let mouseDown = false;
-        
+
         function onMouseDown(e) {
             if (isAnimating) return;
             const topCard = getTopCard();
-            if (!topCard || !topCard.contains(e.target)) return;
+            if (!topCard) return;
+
             startX = e.clientX;
             currentX = 0;
             mouseDown = true;
             isDragging = true;
             topCard.classList.add('is-swiping');
+            topCard.classList.remove('peek-hint');
         }
-        
+
         function onMouseMove(e) {
             if (!mouseDown || !isDragging || isAnimating) return;
             const topCard = getTopCard();
             if (!topCard) return;
-            
+
             currentX = e.clientX - startX;
-            const rotation = currentX * 0.08;
+            const rotation = currentX * 0.1;
             topCard.style.transform = `translateX(${currentX}px) rotate(${rotation}deg)`;
-            topCard.style.transition = 'none';
         }
-        
+
         function onMouseUp(e) {
             if (!mouseDown) return;
             mouseDown = false;
             isDragging = false;
-            
+
             const topCard = getTopCard();
             if (!topCard) return;
             topCard.classList.remove('is-swiping');
-            
-            const threshold = 80;
-            
+
+            // Lower threshold for easier swiping (was 80px)
+            const threshold = 50;
+
             if (currentX < -threshold) {
                 handleSwipe('left');
             } else if (currentX > threshold) {
                 handleSwipe('right');
             } else {
-                topCard.style.transition = 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-                topCard.style.transform = '';
-                setTimeout(() => {
-                    topCard.style.transition = '';
-                }, 400);
+                snapBack(topCard);
             }
         }
-        
-        // Attach events
-        cardStack.addEventListener('touchstart', onTouchStart, { passive: false });
-        cardStack.addEventListener('touchmove', onTouchMove, { passive: false });
+
+        // Attach events to card stack
+        cardStack.addEventListener('touchstart', onTouchStart, { passive: true });
+        cardStack.addEventListener('touchmove', onTouchMove, { passive: true });
         cardStack.addEventListener('touchend', onTouchEnd);
         cardStack.addEventListener('mousedown', onMouseDown);
         document.addEventListener('mousemove', onMouseMove);
         document.addEventListener('mouseup', onMouseUp);
-        
-        // Initial peek animation on first card
+
+        // Initial peek animation on first top card
         const firstTopCard = getTopCard();
         if (firstTopCard) {
-            firstTopCard.classList.add('peek-hint');
+            setTimeout(() => {
+                firstTopCard.classList.add('peek-hint');
+            }, 500);
         }
-        
+
         updateDots();
     }
-    
+
     // Initialize card swiper
     initCardSwiper();
 
