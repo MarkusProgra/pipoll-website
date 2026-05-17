@@ -2193,7 +2193,7 @@ section {
 .card-stack {
     position: relative;
     width: 280px;
-    height: 177px; /* 1334x844 aspect ratio scaled to 280px width (844/1334 * 280 ≈ 177) */
+    height: 177px;
     touch-action: none;
     user-select: none;
 }
@@ -2205,42 +2205,67 @@ section {
     width: 100%;
     height: 100%;
     border-radius: 16px;
-    overflow: hidden;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255,255,255,0.08);
-    background: transparent;
     cursor: grab;
     will-change: transform;
-    transition: box-shadow 0.3s ease;
+    transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.3s ease;
 }
 
 .swipe-card:active {
     cursor: grabbing;
 }
 
-.swipe-card img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    pointer-events: none;
-    display: block;
-}
-
 .swipe-card.is-swiping {
     transition: none;
 }
 
+/* Fly away animation - continues in swipe direction */
+.swipe-card.fly-left {
+    animation: flyAwayLeft 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+.swipe-card.fly-right {
+    animation: flyAwayRight 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+@keyframes flyAwayLeft {
+    0% {
+        transform: translateX(0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(-400px) rotate(-20deg);
+        opacity: 0;
+    }
+}
+
+@keyframes flyAwayRight {
+    0% {
+        transform: translateX(0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(400px) rotate(20deg);
+        opacity: 0;
+    }
+}
+
 /* Stack depth effect - adjusted for landscape cards */
 .swipe-card[data-card-index="1"] {
-    transform: scale(0.95) translateY(4px);
+    transform: scale(0.94) translateY(3px);
+    opacity: 0.9;
 }
 .swipe-card[data-card-index="2"] {
-    transform: scale(0.90) translateY(8px);
+    transform: scale(0.88) translateY(6px);
+    opacity: 0.8;
 }
 .swipe-card[data-card-index="3"] {
-    transform: scale(0.85) translateY(12px);
+    transform: scale(0.82) translateY(9px);
+    opacity: 0.7;
 }
 .swipe-card[data-card-index="4"] {
-    transform: scale(0.80) translateY(16px);
+    transform: scale(0.76) translateY(12px);
+    opacity: 0.6;
 }
 
 .swipe-hint {
