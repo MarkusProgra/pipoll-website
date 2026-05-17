@@ -71,17 +71,20 @@ img {
     display: block;
 }
 
-/* Animated Background */
+/* Animated Background - Full Website Gradient */
 .bg-gradient {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
+    height: 100vh;
+    max-height: 100%;
     z-index: -1;
-    background: radial-gradient(ellipse at 70% 20%, rgba(157, 105, 206, 0.15) 0%, transparent 60%),
-                radial-gradient(ellipse at 20% 80%, rgba(255, 162, 240, 0.1) 0%, transparent 60%),
-                var(--dark);
+    background:
+        radial-gradient(ellipse at 70% 20%, rgba(157, 105, 206, 0.2) 0%, transparent 50%),
+        radial-gradient(ellipse at 20% 80%, rgba(255, 162, 240, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(124, 225, 107, 0.08) 0%, transparent 70%),
+        var(--dark);
     overflow: hidden;
 }
 
@@ -2188,7 +2191,7 @@ section {
 .card-stack {
     position: relative;
     width: 280px;
-    height: 520px;
+    height: 177px; /* 1334x844 aspect ratio scaled to 280px width (844/1334 * 280 ≈ 177) */
     touch-action: none;
     user-select: none;
 }
@@ -2199,9 +2202,9 @@ section {
     left: 0;
     width: 100%;
     height: 100%;
-    border-radius: 28px;
+    border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255,255,255,0.08);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255,255,255,0.08);
     background: var(--gray-900);
     cursor: grab;
     will-change: transform;
@@ -2236,41 +2239,41 @@ section {
     animation: peekHint 1.8s ease-in-out 1.2s both;
 }
 
-/* Stack depth effect */
+/* Stack depth effect - adjusted for landscape cards */
 .swipe-card[data-card-index="1"] {
-    transform: scale(0.95) translateY(8px);
+    transform: scale(0.95) translateY(4px);
 }
 .swipe-card[data-card-index="2"] {
-    transform: scale(0.90) translateY(16px);
+    transform: scale(0.90) translateY(8px);
 }
 .swipe-card[data-card-index="3"] {
-    transform: scale(0.85) translateY(24px);
+    transform: scale(0.85) translateY(12px);
 }
 .swipe-card[data-card-index="4"] {
-    transform: scale(0.80) translateY(32px);
+    transform: scale(0.80) translateY(16px);
 }
 
 @keyframes flyOutLeft {
     0% { transform: translateX(0) rotate(0deg); opacity: 1; }
-    100% { transform: translateX(-120%) rotate(-20deg); opacity: 0; }
+    100% { transform: translateX(-150%) rotate(-15deg); opacity: 0; }
 }
 
 @keyframes flyOutRight {
     0% { transform: translateX(0) rotate(0deg); opacity: 1; }
-    100% { transform: translateX(120%) rotate(20deg); opacity: 0; }
+    100% { transform: translateX(150%) rotate(15deg); opacity: 0; }
 }
 
 @keyframes peekHint {
     0%   { transform: translateX(0) rotate(0deg); }
-    20%  { transform: translateX(-28px) rotate(-4deg); }
-    50%  { transform: translateX(-28px) rotate(-4deg); }
+    20%  { transform: translateX(-20px) rotate(-3deg); }
+    50%  { transform: translateX(-20px) rotate(-3deg); }
     80%  { transform: translateX(0) rotate(0deg); }
     100% { transform: translateX(0) rotate(0deg); }
 }
 
 @keyframes stackReveal {
-    from { transform: scale(0.80) translateY(32px); opacity: 0.6; }
-    to   { transform: scale(0.95) translateY(8px); opacity: 1; }
+    from { transform: scale(0.80) translateY(16px); opacity: 0.6; }
+    to   { transform: scale(0.95) translateY(4px); opacity: 1; }
 }
 
 .swipe-hint {
