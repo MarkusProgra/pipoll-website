@@ -450,29 +450,29 @@ document.addEventListener('DOMContentLoaded', () => {
             // Remove hint class
             topCard.classList.remove('peek-hint');
 
-            // Add fly out animation class
-            topCard.classList.add(direction === 'left' ? 'fly-out-left' : 'fly-out-right');
+            // Instantly move card to back of stack (no animation)
+            const moveX = direction === 'left' ? -1000 : 1000;
+            topCard.style.transition = 'none';
+            topCard.style.transform = `translateX(${moveX}px) rotate(${direction === 'left' ? -15 : 15}deg)`;
+            topCard.style.opacity = '0';
 
-            // Wait for animation to complete
-            setTimeout(() => {
-                // Move swiped card to back of stack
-                cardStack.appendChild(topCard);
+            // Move to back immediately
+            cardStack.appendChild(topCard);
 
-                // Clean up classes
-                topCard.classList.remove('fly-out-left', 'fly-out-right', 'is-swiping');
-                topCard.style.opacity = '';
-                topCard.style.pointerEvents = '';
-                topCard.style.transform = '';
+            // Clean up and reindex
+            topCard.classList.remove('is-swiping');
+            topCard.style.opacity = '';
+            topCard.style.pointerEvents = '';
+            topCard.style.transform = '';
 
-                // Reindex all cards
-                reindexCards();
+            // Reindex all cards
+            reindexCards();
 
-                // Update dot indicator
-                currentIndex = (currentIndex + 1) % totalCards;
-                updateDots();
+            // Update dot indicator
+            currentIndex = (currentIndex + 1) % totalCards;
+            updateDots();
 
-                isAnimating = false;
-            }, 300);
+            isAnimating = false;
         }
 
         function snapBack(card) {
