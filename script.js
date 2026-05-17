@@ -1,12 +1,7 @@
-// ========================================
 // Pipoll Website - Interactive JavaScript
-// ========================================
 
 document.addEventListener('DOMContentLoaded', () => {
-
-    // ========================================
     // Mobile Menu Toggle
-    // ========================================
     const navToggle = document.querySelector('.nav-toggle');
     const mobileMenu = document.querySelector('.mobile-menu');
 
@@ -43,9 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ========================================
     // Navbar hide/show on scroll
-    // ========================================
     const navbar = document.querySelector('.navbar');
     let lastScroll = 0;
     let ticking = false;
@@ -76,9 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }, { passive: true });
     }
 
-    // ========================================
     // Smooth scroll for anchor links
-    // ========================================
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             const href = this.getAttribute('href');
@@ -95,9 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // ========================================
     // Intersection Observer for scroll animations
-    // ========================================
     if ('IntersectionObserver' in window) {
         const observerOptions = {
             threshold: 0.1,
@@ -167,9 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ========================================
     // Parallax effect - desktop only
-    // ========================================
     const isMobile = window.matchMedia('(max-width: 768px)').matches;
     if (!isMobile) {
         const orbs = document.querySelectorAll('.bg-orb');
@@ -191,9 +178,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // ========================================
     // Avatar stack hover effect
-    // ========================================
     const avatarStack = document.querySelector('.avatar-stack');
     if (avatarStack) {
         const avatars = avatarStack.querySelectorAll('.avatar');
@@ -215,11 +200,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ========================================
     // Button ripple effect - desktop only
-    // ========================================
     if (!isMobile) {
-        // Add ripple keyframes
         const rippleStyle = document.createElement('style');
         rippleStyle.textContent = `
             @keyframes ripple {
@@ -264,9 +246,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ========================================
     // Number counting animation for stats
-    // ========================================
     const formatNumber = (num) => {
         if (num >= 1000000) return '$' + (num / 1000000).toFixed(1) + 'M+';
         if (num >= 1000) return (num / 1000).toFixed(0) + 'K+';
@@ -330,9 +310,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('scroll', animateCountersOnScroll, { passive: true });
     setTimeout(animateCountersOnScroll, 100);
 
-    // ========================================
     // Countdown Timer to May 30, 2026
-    // ========================================
     const LAUNCH_DATE = new Date('2026-05-30T00:00:00');
 
     const pad = (n) => String(n).padStart(2, '0');
@@ -353,7 +331,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const days    = Math.floor(diff / (1000 * 60 * 60 * 24));
         const hours   = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((diff % (1000 * 60)) / (1000 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
         // Hero countdown
@@ -383,15 +361,11 @@ document.addEventListener('DOMContentLoaded', () => {
     updateCountdown();
     setInterval(updateCountdown, 1000);
 
-    // Console message for developers
+    // Console message
     console.log('%c🚀 Pipoll', 'font-size: 24px; font-weight: bold; color: #9D69CE;');
     console.log('%cInvest on humans.', 'font-size: 14px; color: #FFA2F0;');
-    console.log('%cBuilt with ❤️ by Markus & Oliver', 'font-size: 12px; color: #737373;');
 
-
-    // ========================================
-    // Mobile Card Swiper - Optimized
-    // ========================================
+    // Mobile Card Swiper
     function initCardSwiper() {
         const cardStack = document.getElementById('cardStack');
         if (!cardStack) return;
