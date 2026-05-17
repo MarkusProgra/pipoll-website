@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
     <meta charset="UTF-8">
@@ -7,7 +8,6 @@
 
     <title>Pipoll Blog</title>
 
-    <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="blog-styles.css">
 
 </head>
@@ -60,9 +60,7 @@
 
         <div class="blog-posts-container">
 
-            <div class="blog-grid" id="blogGrid">
-
-            </div>
+            <div class="blog-grid" id="blogGrid"></div>
 
         </div>
 
@@ -151,6 +149,8 @@
 
                 loginError.style.display = 'none';
 
+                localStorage.setItem('pipoll_admin', 'true');
+
                 window.location.href = 'admin.html';
 
             } else {
@@ -166,6 +166,26 @@
             const blogGrid = document.getElementById('blogGrid');
 
             const posts = JSON.parse(localStorage.getItem('pipoll_blog_posts') || '[]');
+
+            if (posts.length === 0) {
+
+                blogGrid.innerHTML = `
+                
+                    <div class="empty-state">
+
+                        <h2>No blog posts yet</h2>
+
+                        <p>
+                            Enter admin mode to create your first article.
+                        </p>
+
+                    </div>
+                
+                `;
+
+                return;
+
+            }
 
             blogGrid.innerHTML = '';
 
