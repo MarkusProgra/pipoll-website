@@ -447,32 +447,31 @@ document.addEventListener('DOMContentLoaded', () => {
             const topCard = getTopCard();
             if (!topCard) return;
 
-            // Remove hint class
-            topCard.classList.remove('peek-hint');
+            // Remove hint class and is-swiping
+            topCard.classList.remove('peek-hint', 'is-swiping');
 
-            // Instantly move card to back of stack (no animation)
-            const moveX = direction === 'left' ? -1000 : 1000;
-            topCard.style.transition = 'none';
-            topCard.style.transform = `translateX(${moveX}px) rotate(${direction === 'left' ? -15 : 15}deg)`;
-            topCard.style.opacity = '0';
+            // Add fly away animation class based on direction
+            topCard.classList.add(direction === 'left' ? 'fly-left' : 'fly-right');
 
-            // Move to back immediately
-            cardStack.appendChild(topCard);
+            // Wait for fly away animation to complete, then reset card
+            setTimeout(() => {
+                // Move to back of stack
+                cardStack.appendChild(topCard);
 
-            // Clean up and reindex
-            topCard.classList.remove('is-swiping');
-            topCard.style.opacity = '';
-            topCard.style.pointerEvents = '';
-            topCard.style.transform = '';
+                // Clean up classes and styles
+                topCard.classList.remove('fly-left', 'fly-right');
+                topCard.style.opacity = '';
+                topCard.style.transform = '';
 
-            // Reindex all cards
-            reindexCards();
+                // Reindex all cards
+                reindexCards();
 
-            // Update dot indicator
-            currentIndex = (currentIndex + 1) % totalCards;
-            updateDots();
+                // Update dot indicator
+                currentIndex = (currentIndex + 1) % totalCards;
+                updateDots();
 
-            isAnimating = false;
+                isAnimating = false;
+            }, 500);
         }
 
         function snapBack(card) {
