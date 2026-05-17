@@ -1,3 +1,7 @@
+* {
+    box-sizing: border-box;
+}
+
 body {
     background: #0a0a0a;
     color: white;
@@ -147,20 +151,31 @@ a {
 
 .blog-card-title {
     font-size: 1.4rem;
-
     margin-bottom: 1rem;
 }
 
 .blog-card-excerpt {
     color: rgba(255,255,255,0.7);
-
     line-height: 1.8;
 }
 
 .blog-card-meta {
     margin-bottom: 1rem;
-
     color: rgba(255,255,255,0.45);
+}
+
+.empty-state {
+    grid-column: 1/-1;
+
+    text-align: center;
+
+    padding: 5rem 2rem;
+
+    border-radius: 28px;
+
+    background: rgba(255,255,255,0.03);
+
+    border: 1px solid rgba(255,255,255,0.06);
 }
 
 /* MODAL */
@@ -202,7 +217,7 @@ a {
 
     border-radius: 30px;
 
-    background: rgba(18,18,18,0.92);
+    background: rgba(18,18,18,0.96);
 
     border: 1px solid rgba(255,255,255,0.08);
 
@@ -231,7 +246,6 @@ a {
 
 .modal-title {
     font-size: 2rem;
-
     margin-bottom: 0.5rem;
 }
 
@@ -246,7 +260,6 @@ a {
 .modal-form {
     display: flex;
     flex-direction: column;
-
     gap: 1rem;
 }
 
@@ -282,7 +295,6 @@ a {
 
 .modal-input-error {
     display: none;
-
     color: #ff6b6b;
 }
 
