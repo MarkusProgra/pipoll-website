@@ -1,6 +1,4 @@
-// ========================================
 // Pipoll Legal Pages - Interactive Effects
-// ========================================
 
 document.addEventListener('DOMContentLoaded', () => {
     // Reading Progress Bar
