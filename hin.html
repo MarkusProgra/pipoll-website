@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="theme-color" content="#0a0a0a">
+  <title>Human Index Number — Pipoll</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="hin-styles.css">
+</head>
+<body>
+
+<!-- ── Return to home ── -->
+<a href="https://pipoll.live" class="return-home-btn">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="15 18 9 12 15 6"/>
+  </svg>
+  Return to Home
+</a>
+
+<!-- ░░░ BACKGROUND ░░░ -->
+<div class="bg-layer">
+  <div class="bg-grid"></div>
+  <div class="bg-orb bg-orb-1"></div>
+  <div class="bg-orb bg-orb-2"></div>
+  <div class="bg-orb bg-orb-3"></div>
+</div>
+
+<!-- ════════════════════════════ HERO ════════════════════════════ -->
+<section class="hero">
+  <div class="hero-inner">
+
+    <!-- System online badge -->
+    <div class="sys-header">
+      <span class="sys-dot"></span>
+      <span class="sys-text">SYS://PIPOLL.IDENTITY.REGISTRY · ONLINE</span>
+    </div>
+
+    <!-- Terminal card -->
+    <div class="hin-terminal">
+      <div class="terminal-top-bar">
+        <span class="tb-dot red"></span>
+        <span class="tb-dot yellow"></span>
+        <span class="tb-dot green"></span>
+        <span class="tb-title">IDENTITY&nbsp;·&nbsp;REGISTRY&nbsp;·&nbsp;v2.4.1</span>
+      </div>
+      <div class="terminal-body">
+        <div class="terminal-line">
+          <span class="tl-prompt">PIPOLL</span>
+          <span class="tl-cmd">$ init --user-identity --region=global</span>
+        </div>
+        <div class="terminal-line">
+          <span class="tl-comment">// Scanning biometric matrix...</span>
+        </div>
+        <div class="scan-bar-wrapper">
+          <div class="scan-bar-track">
+            <div class="scan-bar-fill" id="scanBar"></div>
+          </div>
+          <span class="scan-pct" id="scanPct">0%</span>
+        </div>
+        <div class="terminal-line fade-in-delay-1">
+          <span class="tl-prompt">SYSTEM</span>
+          <span class="tl-output">Identity vector computed · District mapped</span>
+        </div>
+        <div class="terminal-line fade-in-delay-2">
+          <span class="tl-prompt">OUTPUT</span>
+          <span class="tl-hin" id="hinDisplay">
+            <span class="hin-hash">#</span><span class="hin-country">A2</span><span class="hin-ag">3</span><span class="hin-dash">-</span><span class="hin-uid-chars">ka3456</span>
+          </span>
+        </div>
+        <div class="terminal-status fade-in-delay-3">
+          <span class="status-pill green">● REGISTERED</span>
+          <span class="status-pill blue">● DISTRICT A</span>
+          <span class="status-pill purple">● VERIFIED</span>
+        </div>
+      </div>
+      <div class="scan-line-overlay" id="scanLine"></div>
+    </div>
+
+    <!-- Main heading -->
+    <h1 class="hero-title">
+      Every human<br><span class="gradient-text">indexed.</span>
+    </h1>
+    <p class="hero-subtitle">
+      Your permanent, system-assigned identity tag. Unique to you. Built for a world of billions.
+    </p>
+
+    <!-- Feature pillars -->
+    <div class="hero-pillars">
+      <div class="pillar-item">
+        <div class="pillar-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <span>Identity</span>
+      </div>
+      <div class="pillar-divider"></div>
+      <div class="pillar-item">
+        <div class="pillar-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <span>Verification</span>
+      </div>
+      <div class="pillar-divider"></div>
+      <div class="pillar-item">
+        <div class="pillar-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </div>
+        <span>Search</span>
+      </div>
+      <div class="pillar-divider"></div>
+      <div class="pillar-item">
+        <div class="pillar-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <span>District</span>
+      </div>
+    </div>
+
+    <!-- Live counter -->
+    <div class="live-counter">
+      <span class="lc-dot"></span>
+      <span class="lc-label">HUMANS INDEXED</span>
+      <span class="lc-num" id="humanCounter">12,847,391</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════════════════════════ WHAT IS HIN ════════════════════════════ -->
+<section class="what-is-hin">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-tag">WHAT IS HIN</span>
+      <h2 class="section-title">Your slot in the <span class="gradient-text">global registry</span></h2>
+      <p class="section-sub">The HIN makes finding the right person instant — no name confusion, no doubt.</p>
+    </div>
+
+    <div class="use-card-grid reveal">
+      <div class="use-card">
+        <div class="use-card-icon" style="background:linear-gradient(135deg,#9D69CE,#FFA2F0)">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <h3>Identity</h3>
+        <p>No two humans share the same HIN — cryptographically tied to your account from day one.</p>
+      </div>
+      <div class="use-card">
+        <div class="use-card-icon" style="background:linear-gradient(135deg,#38bdf8,#9D69CE)">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3>Verification</h3>
+        <p>Confirms you're the right person instantly. Zero impersonation. Zero doubt.</p>
+      </div>
+      <div class="use-card">
+        <div class="use-card-icon" style="background:linear-gradient(135deg,#7CE16B,#38bdf8)">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </div>
+        <h3>Precision Search</h3>
+        <p>Share it. Anyone finds your exact profile in milliseconds — no mix-ups, no guessing.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════ ANATOMY ════════════════════════════ -->
+<section class="anatomy-section">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-tag">ANATOMY</span>
+      <h2 class="section-title">Decode the <span class="gradient-text">number</span></h2>
+      <p class="section-sub">11–12 characters. Every one means something. Tap to decode.</p>
+    </div>
+
+    <div class="anatomy-card reveal">
+      <!-- Interactive HIN display -->
+      <div class="anatomy-hin">
+        <div class="anat-segment seg-prefix active" data-info="prefix">
+          <div class="anat-chars"><span>#</span></div>
+          <div class="anat-label">Prefix</div>
+        </div>
+        <div class="anat-segment seg-country" data-info="country">
+          <div class="anat-chars"><span>A</span><span>2</span></div>
+          <div class="anat-label">District</div>
+        </div>
+        <div class="anat-segment seg-ag" data-info="agegender">
+          <div class="anat-chars"><span>3</span></div>
+          <div class="anat-label">Age×Gender</div>
+        </div>
+        <div class="anat-segment seg-dash" data-info="dash">
+          <div class="anat-chars"><span>-</span></div>
+          <div class="anat-label">Separator</div>
+        </div>
+        <div class="anat-segment seg-uid" data-info="uid">
+          <div class="anat-chars">
+            <span>k</span><span>a</span><span>3</span><span>4</span><span>5</span><span>6</span>
+          </div>
+          <div class="anat-label">UID Tail</div>
+        </div>
+      </div>
+
+      <!-- Info panel -->
+      <div class="anatomy-info-panel" id="anatInfo">
+        <div class="anat-info-item active" data-key="prefix">
+          <div class="anat-info-char">#</div>
+          <div class="anat-info-text">
+            <strong>System Prefix</strong>
+            <p>Marks every HIN. The Pipoll identity signal.</p>
+          </div>
+        </div>
+        <div class="anat-info-item" data-key="country">
+          <div class="anat-info-char" style="color:#38bdf8">A2</div>
+          <div class="anat-info-text">
+            <strong>District Code</strong>
+            <p>Letter = district tier. Number = country within it. Germany → A2.</p>
+          </div>
+        </div>
+        <div class="anat-info-item" data-key="agegender">
+          <div class="anat-info-char" style="color:#FFA2F0">3</div>
+          <div class="anat-info-text">
+            <strong>Age × Gender Code</strong>
+            <p>One token. Odd = male, even = female, letter = other. 3 = male, 16–25.</p>
+          </div>
+        </div>
+        <div class="anat-info-item" data-key="dash">
+          <div class="anat-info-char" style="color:#525252">—</div>
+          <div class="anat-info-text">
+            <strong>Separator</strong>
+            <p>Splits the classification prefix from your unique tail.</p>
+          </div>
+        </div>
+        <div class="anat-info-item uid-entropy-panel" data-key="uid">
+          <div class="anat-info-char" style="font-size:.95rem;color:#7CE16B">ka3456</div>
+          <div class="anat-info-text">
+            <strong>UID Tail — Entropy Class Ω</strong>
+            <p>Not just random — <em>physically unpredictable.</em> Seeded from lava lamp chaos, atmospheric noise, and hardware thermal drift. No GPU or quantum computer can ever brute-force it.</p>
+            <div class="entropy-badge-row">
+              <span class="entropy-badge">🌋 Lava entropy</span>
+              <span class="entropy-badge">📡 Atmospheric noise</span>
+              <span class="entropy-badge">🔒 Hack-proof</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Example breakdown note -->
+    <p class="matrix-note reveal" style="margin-top:1.5rem">
+      Example: uid=h792hd02jm210sdka3456 · male · age 18 · Germany → <strong style="color:var(--primary);font-family:var(--font-mono)">#A23-ka3456</strong>
+    </p>
+  </div>
+</section>
+
+<!-- ════════════════════════════ MATRIX TABLE ════════════════════════════ -->
+<section class="matrix-section">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-tag">CLASSIFICATION MATRIX</span>
+      <h2 class="section-title">Age <span class="gradient-text">×</span> Gender code</h2>
+      <p class="section-sub">One character. Two facts. Every human classified in a single token.</p>
+    </div>
+
+    <div class="matrix-table reveal">
+      <div class="matrix-header">
+        <div class="mh-cell mh-empty">Age Range</div>
+        <div class="mh-cell male">♂ Male</div>
+        <div class="mh-cell female">♀ Female</div>
+        <div class="mh-cell other">⊕ Other</div>
+      </div>
+      <div class="matrix-row">
+        <div class="mr-age">1 – 15</div>
+        <div class="mr-code male"><span class="code-badge">1</span></div>
+        <div class="mr-code female"><span class="code-badge">2</span></div>
+        <div class="mr-code other"><span class="code-badge">R</span></div>
+      </div>
+      <div class="matrix-row">
+        <div class="mr-age">16 – 25</div>
+        <div class="mr-code male"><span class="code-badge">3</span></div>
+        <div class="mr-code female"><span class="code-badge">4</span></div>
+        <div class="mr-code other"><span class="code-badge">T</span></div>
+      </div>
+      <div class="matrix-row">
+        <div class="mr-age">26 – 40</div>
+        <div class="mr-code male"><span class="code-badge">5</span></div>
+        <div class="mr-code female"><span class="code-badge">6</span></div>
+        <div class="mr-code other"><span class="code-badge">I</span></div>
+      </div>
+      <div class="matrix-row">
+        <div class="mr-age">41 – 65</div>
+        <div class="mr-code male"><span class="code-badge">7</span></div>
+        <div class="mr-code female"><span class="code-badge">8</span></div>
+        <div class="mr-code other"><span class="code-badge">P</span></div>
+      </div>
+      <div class="matrix-row">
+        <div class="mr-age">65+</div>
+        <div class="mr-code male"><span class="code-badge">9</span></div>
+        <div class="mr-code female"><span class="code-badge">0</span></div>
+        <div class="mr-code other"><span class="code-badge">V</span></div>
+      </div>
+    </div>
+    <p class="matrix-note reveal">Odd numbers = male · Even numbers = female · Letters = other genders</p>
+  </div>
+</section>
+
+<!-- ════════════════════════════ ENTROPY FOCUS ════════════════════════════ -->
+<section class="entropy-section">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-tag">UID ENTROPY</span>
+      <h2 class="section-title">Built on <span class="gradient-text">physical chaos</span></h2>
+      <p class="section-sub">The 6 tail characters are seeded from systems so chaotic, no computer on earth can predict them.</p>
+    </div>
+
+    <div class="entropy-cards reveal">
+      <div class="entropy-card lava-card">
+        <div class="entropy-icon-wrap">
+          <div class="lava-blob b1"></div>
+          <div class="lava-blob b2"></div>
+          <div class="lava-blob b3"></div>
+        </div>
+        <h3>Lava Lamp Randomness</h3>
+        <p>Cloudflare's <strong>LavaRand</strong> films 100 lava lamps 24/7. The chaotic fluid motion — impossible to simulate — seeds your UID tail with real physical entropy.</p>
+      </div>
+      <div class="entropy-card">
+        <div class="entropy-icon-wrap atmo">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="1.5">
+            <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+          </svg>
+        </div>
+        <h3>Atmospheric Noise</h3>
+        <p>Radio receivers capture electromagnetic noise from Earth's atmosphere — pure physical chaos no adversary can replicate.</p>
+      </div>
+      <div class="entropy-card">
+        <div class="entropy-icon-wrap hw">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#9D69CE" stroke-width="1.5">
+            <rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>
+            <path d="M7 8h.01M12 8h.01M17 8h.01"/>
+          </svg>
+        </div>
+        <h3>Hardware Thermal Drift</h3>
+        <p>Quantum thermal noise across server silicon creates an entropy pool no algorithm can reverse-engineer. Sealed the moment they form.</p>
+      </div>
+    </div>
+
+    <div class="entropy-footer reveal">
+      <div class="entropy-claim">
+        <span class="ef-icon">⊛</span>
+        <span><strong>Hack-proof by physics, not math.</strong> No GPU cluster or quantum computer can predict your UID tail. Permanently, physically yours.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════ GLOBAL DISTRICTS ════════════════════════════ -->
+<section class="districts-section">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-tag">GLOBAL DISTRICTS</span>
+      <h2 class="section-title">Where are you <span class="gradient-text">classified?</span></h2>
+      <p class="section-sub">Every country has a district. Your HIN carries it. Every dot is a registered human. Drag to explore.</p>
+    </div>
+  </div>
+
+  <!-- Globe: full-bleed -->
+  <div class="globe-full reveal" id="globe-container">
+    <canvas id="globe-canvas" style="display:block;width:100%;cursor:grab"></canvas>
+    <div id="globe-tip" style="position:absolute;top:0;left:0;pointer-events:none;opacity:0;background:rgba(5,8,20,0.95);border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:8px 13px;font-family:monospace;font-size:13px;color:#fff;transition:opacity .12s;white-space:nowrap;z-index:10"></div>
+    <div class="globe-fade-top"></div>
+    <div class="globe-fade-bottom"></div>
+  </div>
+  <!-- Legend: OUTSIDE the canvas so it never overlaps on mobile -->
+  <div class="globe-legend-wrapper">
+    <div id="globe-leg" class="globe-legend-inner"></div>
+  </div>
+</section>
+
+<!-- ════════════════════════════ SHARE CTA ════════════════════════════ -->
+<section class="share-section">
+  <div class="container" style="text-align:center">
+    <div class="reveal">
+      <span class="section-tag">YOUR NUMBER</span>
+      <h2 class="section-title">Share your <span class="gradient-text">HIN</span></h2>
+      <p class="section-sub" style="margin:0 auto 2.5rem">Share it. Anyone who needs to find, verify, or invest in you will know exactly where to look.</p>
+    </div>
+
+    <div class="share-card reveal">
+      <div class="share-card-inner">
+        <div class="share-label">YOUR HUMAN INDEX NUMBER</div>
+        <div class="share-number">
+          #A2<span class="share-ag">3</span><span class="share-dash">-</span><span class="share-uid">ka3456</span>
+        </div>
+        <div class="share-sublabel">Open Pipoll → Profile → Copy your HIN</div>
+      </div>
+      <div class="share-features">
+        <div class="share-feature">
+          <span class="sf-icon">⊛</span>
+          <span>Globally unique</span>
+        </div>
+        <div class="share-feature">
+          <span class="sf-icon">⊙</span>
+          <span>Never changes</span>
+        </div>
+        <div class="share-feature">
+          <span class="sf-icon">⊕</span>
+          <span>Instant lookup</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════ FOOTER ════════════════════════════ -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span class="footer-brand">Pipoll · The Human Economy</span>
+    <span class="footer-copy">© 2026 Pipoll. All rights reserved.</span>
+  </div>
+</footer>
+
+<!-- ════════════════════════════ SCRIPTS ════════════════════════════ -->
+<script>
+/* ─────────────────────────────────────────────
+   1. TERMINAL BOOT ANIMATION
+───────────────────────────────────────────── */
+(function(){
+  const bar = document.getElementById('scanBar');
+  const pct = document.getElementById('scanPct');
+  let p = 0;
+  const iv = setInterval(()=>{
+    p += Math.random()*3.5 + 0.5;
+    if(p >= 100){ p = 100; clearInterval(iv);
+      setTimeout(()=>{
+        // glitch the HIN after scan
+        const hin = document.getElementById('hinDisplay');
+        hin.classList.add('glitch');
+        setTimeout(()=>hin.classList.remove('glitch'), 1800);
+      }, 400);
+    }
+    bar.style.width = p+'%';
+    pct.textContent = Math.floor(p)+'%';
+  }, 45);
+})();
+
+/* ─────────────────────────────────────────────
+   2. LIVE HUMAN COUNTER
+───────────────────────────────────────────── */
+(function(){
+  const el = document.getElementById('humanCounter');
+  let count = 12847391;
+  function fmt(n){ return n.toLocaleString('en-US'); }
+  el.textContent = fmt(count);
+  setInterval(()=>{
+    count += Math.floor(Math.random()*3) + 1;
+    el.textContent = fmt(count);
+  }, 2200);
+})();
+
+/* ─────────────────────────────────────────────
+   3. ANATOMY SEGMENT INTERACTION
+───────────────────────────────────────────── */
+(function(){
+  const segments = document.querySelectorAll('.anat-segment');
+  const infos    = document.querySelectorAll('.anat-info-item');
+  segments.forEach(seg=>{
+    seg.addEventListener('click', ()=>{
+      const key = seg.dataset.info;
+      segments.forEach(s=>s.classList.remove('active'));
+      infos.forEach(i=>i.classList.remove('active'));
+      seg.classList.add('active');
+      document.querySelector(`.anat-info-item[data-key="${key}"]`)?.classList.add('active');
+    });
+  });
+})();
+
+/* ─────────────────────────────────────────────
+   4. SCROLL REVEAL
+───────────────────────────────────────────── */
+(function(){
+  const obs = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold:.12 });
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+})();
+
+/* ─────────────────────────────────────────────
+   5. GLOBE (WORLD DISTRICTS)
+───────────────────────────────────────────── */
+const COUNTRY_MAP = {
+  'Iceland':'S1','Norway':'S2','Switzerland':'S3','Denmark':'S4','Sweden':'S5','Finland':'S6','Luxembourg':'S7','Netherlands':'S8','Ireland':'S9','Austria':'S10',
+  'United States':'A1','Germany':'A2','Japan':'A3','United Kingdom':'A4','France':'A5','Canada':'A6','Australia':'A7','Belgium':'A8','New Zealand':'A9','Singapore':'A10','South Korea':'A11','Israel':'A12','Estonia':'A13',
+  'Spain':'H1','Italy':'H2','Portugal':'H3','Greece':'H4','Slovenia':'H5','Czech Republic':'H6','Malta':'H7','Cyprus':'H8','Lithuania':'H9','Latvia':'H10','Poland':'H11','Slovakia':'H12','Hungary':'H13','Croatia':'H14','Romania':'H15','Bulgaria':'H16','United Arab Emirates':'H17','Qatar':'H18','Kuwait':'H19','Bahrain':'H20','Oman':'H21','Chile':'H22','Argentina':'H23','Uruguay':'H24','Costa Rica':'H25',
+  'Russia':'T1','Belarus':'T2','Ukraine':'T3','Serbia':'T4','Montenegro':'T5','Bosnia and Herzegovina':'T6','Albania':'T7','North Macedonia':'T8','Moldova':'T9','Georgia':'T10','Armenia':'T11','Azerbaijan':'T12','Kazakhstan':'T13','Malaysia':'T14','China':'T15','Thailand':'T16','Iran':'T17','Turkey':'T18','Saudi Arabia':'T19','Mexico':'T20','Brazil':'T21','Panama':'T22','Cuba':'T23','Trinidad and Tobago':'T24','Bahamas':'T25','Barbados':'T26','Jamaica':'T27','Colombia':'T28','Peru':'T29','Tunisia':'T30','Morocco':'T31','Algeria':'T32','Jordan':'T33','Lebanon':'T34','Maldives':'T35','Sri Lanka':'T36','Brunei':'T37','Libya':'T38',
+  'Guatemala':'C1','El Salvador':'C2','Honduras':'C3','Nicaragua':'C4','Bolivia':'C5','Ecuador':'C6','Paraguay':'C7','Venezuela':'C8','Dominican Republic':'C9','Haiti':'C10','Belize':'C11','Guyana':'C12','Suriname':'C13','Philippines':'C14','Indonesia':'C15','Vietnam':'C16','Myanmar':'C17','Cambodia':'C18','Laos':'C19','Bangladesh':'C20','Nepal':'C21','Pakistan':'C22','India':'C23','Egypt':'C24','Iraq':'C25','Bhutan':'C26','Mongolia':'C27','Uzbekistan':'C28','Kyrgyzstan':'C29','Tajikistan':'C30','Turkmenistan':'C31','Afghanistan':'C32',
+  'South Africa':'F1','Botswana':'F2','Namibia':'F3','Mauritius':'F4','Seychelles':'F5','Cabo Verde':'F6','Ghana':'F7','Kenya':'F8','Rwanda':'F9','Tanzania':'F10','Uganda':'F11','Senegal':'F12','Ivory Coast':'F13','Zambia':'F14','Zimbabwe':'F15','Mozambique':'F16','Madagascar':'F17','Ethiopia':'F18','Cameroon':'F19','Nigeria':'F20','Angola':'F21','Gabon':'F22','Congo':'F23','Malawi':'F24','Burundi':'F25','Togo':'F26','Benin':'F27','Eswatini':'F28','Lesotho':'F29',
+  'Eritrea':'L1','Djibouti':'L2','Comoros':'L3','Sao Tome and Principe':'L4','Guinea':'L5','Guinea-Bissau':'L6','Sierra Leone':'L7','Liberia':'L8','Burkina Faso':'L9','Mali':'L10','Niger':'L11','Chad':'L12','Mauritania':'L13','Gambia':'L14','Equatorial Guinea':'L15','Central African Republic':'L16','South Sudan':'L17','Somalia':'L18','Sudan':'L19','Yemen':'L20','Syria':'L21',
+  'Monaco':'V1','Liechtenstein':'V2','San Marino':'V3','Andorra':'V4','Vatican City':'V5','Palau':'V6','Marshall Islands':'V7','Micronesia':'V8','Samoa':'V9','Tonga':'V10','Fiji':'V11','Vanuatu':'V12','Solomon Islands':'V13','Kiribati':'V14','Tuvalu':'V15','Nauru':'V16','Timor-Leste':'V17','Papua New Guinea':'V18','Saint Kitts and Nevis':'V19','Antigua and Barbuda':'V20','Dominica':'V21','Saint Lucia':'V22','Saint Vincent and the Grenadines':'V23','Grenada':'V24',
+  'Taiwan':'Q1','North Korea':'Q2',
+};
+
+const DISTRICT_META = {
+  'S':{name:'Absolute Peak',  col:'#a78bfa'},
+  'A':{name:'G7 Powers',      col:'#38bdf8'},
+  'H':{name:'Strong Dev.',    col:'#22d3ee'},
+  'T':{name:'Upper Mid.',     col:'#4ade80'},
+  'C':{name:'LatAm Core',     col:'#fb923c'},
+  'F':{name:'Sub-Saharan',    col:'#86efac'},
+  'L':{name:'Low Dev.',       col:'#f87171'},
+  'V':{name:'Pacific',        col:'#2dd4bf'},
+  'Q':{name:'Disputed',       col:'#94a3b8'},
+};
+
+const COORDS = {
+  'Iceland':[64.9,-18.5],'Norway':[60.5,8.5],'Switzerland':[46.8,8.2],'Denmark':[56.3,9.5],'Sweden':[60.1,18.6],'Finland':[61.9,25.7],'Luxembourg':[49.8,6.1],'Netherlands':[52.1,5.3],'Ireland':[53.4,-8.2],'Austria':[47.5,14.5],
+  'United States':[37.1,-95.7],'Germany':[51.2,10.5],'Japan':[36.2,138.3],'United Kingdom':[55.4,-3.4],'France':[46.2,2.2],'Canada':[56.1,-106.3],'Australia':[-25.3,133.8],'Belgium':[50.5,4.5],'New Zealand':[-40.9,174.9],'Singapore':[1.3,103.8],'South Korea':[35.9,127.8],'Israel':[31.0,34.9],'Estonia':[58.6,25.0],
+  'Spain':[40.5,-3.7],'Italy':[41.9,12.6],'Portugal':[39.4,-8.2],'Greece':[39.1,21.8],'Slovenia':[46.2,14.8],'Czech Republic':[49.8,15.5],'Malta':[35.9,14.5],'Cyprus':[35.1,33.4],'Lithuania':[55.2,24.0],'Latvia':[56.9,24.6],'Poland':[52.1,19.4],'Slovakia':[48.7,19.7],'Hungary':[47.2,19.5],'Croatia':[45.1,15.2],'Romania':[45.9,24.9],'Bulgaria':[42.7,25.5],'United Arab Emirates':[23.4,53.8],'Qatar':[25.4,51.2],'Kuwait':[29.3,47.5],'Bahrain':[26.0,50.5],'Oman':[21.0,57.0],'Chile':[-35.7,-71.5],'Argentina':[-38.4,-63.6],'Uruguay':[-32.5,-55.8],'Costa Rica':[9.7,-83.8],
+  'Russia':[61.5,105.3],'Belarus':[53.7,27.9],'Ukraine':[48.4,31.2],'Serbia':[44.0,21.0],'Montenegro':[42.7,19.4],'Bosnia and Herzegovina':[43.9,17.7],'Albania':[41.2,20.2],'North Macedonia':[41.6,21.7],'Moldova':[47.4,28.4],'Georgia':[42.3,43.4],'Armenia':[40.1,45.0],'Azerbaijan':[40.1,47.6],'Kazakhstan':[48.0,66.9],'Malaysia':[4.2,108.0],'China':[35.9,104.2],'Thailand':[15.9,100.9],'Iran':[32.4,53.7],'Turkey':[39.1,35.2],'Saudi Arabia':[23.9,45.1],'Mexico':[23.6,-102.6],'Brazil':[-14.2,-51.9],'Panama':[8.5,-80.8],'Cuba':[21.5,-77.8],'Trinidad and Tobago':[10.7,-61.2],'Bahamas':[25.0,-77.4],'Barbados':[13.2,-59.6],'Jamaica':[18.1,-77.3],'Colombia':[4.6,-74.3],'Peru':[-9.2,-75.0],'Tunisia':[33.9,9.5],'Morocco':[31.8,-7.1],'Algeria':[28.0,2.6],'Jordan':[30.6,36.2],'Lebanon':[33.9,35.5],'Maldives':[3.2,73.2],'Sri Lanka':[7.9,80.8],'Brunei':[4.5,114.7],'Libya':[26.3,17.2],
+  'Guatemala':[15.8,-90.2],'El Salvador':[13.8,-88.9],'Honduras':[15.2,-86.2],'Nicaragua':[12.9,-85.2],'Bolivia':[-16.3,-63.6],'Ecuador':[-1.8,-78.2],'Paraguay':[-23.4,-58.4],'Venezuela':[6.4,-66.6],'Dominican Republic':[18.7,-70.2],'Haiti':[19.0,-72.3],'Belize':[17.2,-88.5],'Guyana':[4.9,-58.9],'Suriname':[3.9,-56.0],'Philippines':[12.9,121.8],'Indonesia':[-0.8,113.9],'Vietnam':[14.1,108.3],'Myanmar':[17.1,96.7],'Cambodia':[11.6,104.9],'Laos':[17.2,102.6],'Bangladesh':[23.7,90.4],'Nepal':[28.4,84.1],'Pakistan':[30.4,69.3],'India':[20.6,78.9],'Egypt':[26.8,30.8],'Iraq':[33.2,43.7],'Bhutan':[27.5,90.4],'Mongolia':[46.9,103.8],'Uzbekistan':[41.4,64.6],'Kyrgyzstan':[41.2,74.8],'Tajikistan':[38.9,71.3],'Turkmenistan':[38.9,59.6],'Afghanistan':[33.9,67.7],
+  'South Africa':[-30.6,22.9],'Botswana':[-22.3,24.7],'Namibia':[-22.9,18.5],'Mauritius':[-20.3,57.6],'Seychelles':[-4.7,55.5],'Cabo Verde':[14.9,-23.6],'Ghana':[7.9,-1.0],'Kenya':[0.0,37.9],'Rwanda':[-1.9,29.9],'Tanzania':[-6.4,34.9],'Uganda':[1.4,32.3],'Senegal':[14.5,-14.5],'Ivory Coast':[7.5,-5.6],'Zambia':[-13.1,27.9],'Zimbabwe':[-19.0,29.2],'Mozambique':[-18.7,35.5],'Madagascar':[-18.8,46.9],'Ethiopia':[9.1,40.5],'Cameroon':[3.9,11.5],'Nigeria':[9.1,8.7],'Angola':[-11.2,17.9],'Gabon':[-0.8,11.6],'Congo':[-0.2,15.8],'Malawi':[-13.3,34.3],'Burundi':[-3.4,29.9],'Togo':[8.6,0.8],'Benin':[9.3,2.3],'Eswatini':[-26.5,31.5],'Lesotho':[-29.6,28.2],
+  'Eritrea':[15.2,39.8],'Djibouti':[11.8,42.6],'Comoros':[-11.6,43.3],'Sao Tome and Principe':[0.2,6.6],'Guinea':[9.9,-11.4],'Guinea-Bissau':[11.8,-15.2],'Sierra Leone':[8.5,-11.8],'Liberia':[6.4,-9.4],'Burkina Faso':[12.4,-1.6],'Mali':[17.6,-4.0],'Niger':[17.6,8.1],'Chad':[15.5,18.7],'Mauritania':[21.0,-10.9],'Gambia':[13.4,-15.3],'Equatorial Guinea':[1.6,10.3],'Central African Republic':[6.6,20.9],'South Sudan':[6.9,31.3],'Somalia':[5.2,46.2],'Sudan':[15.6,32.5],'Yemen':[15.6,48.5],'Syria':[34.8,38.9],
+  'Monaco':[43.7,7.4],'Liechtenstein':[47.2,9.5],'San Marino':[43.9,12.5],'Andorra':[42.5,1.5],'Vatican City':[41.9,12.5],'Palau':[7.5,134.6],'Marshall Islands':[7.1,171.2],'Micronesia':[7.4,150.6],'Samoa':[-13.8,-172.1],'Tonga':[-21.2,-175.2],'Fiji':[-17.7,178.1],'Vanuatu':[-15.4,166.9],'Solomon Islands':[-9.6,160.2],'Kiribati':[1.9,-157.4],'Tuvalu':[-7.5,178.7],'Nauru':[-0.5,166.9],'Timor-Leste':[-8.9,125.7],'Papua New Guinea':[-6.3,143.9],'Saint Kitts and Nevis':[17.4,-62.8],'Antigua and Barbuda':[17.1,-61.8],'Dominica':[15.4,-61.4],'Saint Lucia':[13.9,-60.9],'Saint Vincent and the Grenadines':[13.3,-61.2],'Grenada':[12.1,-61.7],
+  'Taiwan':[23.7,120.9],'North Korea':[40.3,127.5],
+};
+
+(function initGlobe(){
+  const container = document.getElementById('globe-container');
+  const canvas    = document.getElementById('globe-canvas');
+  const tip       = document.getElementById('globe-tip');
+  const legEl     = document.getElementById('globe-leg');
+
+  // Responsive size — full-bleed: use viewport width, taller on desktop
+  function getSize(){
+    const w = container.offsetWidth || window.innerWidth;
+    const isMobile = w < 640;
+    const h = isMobile
+      ? Math.min(Math.max(w * 0.9, 300), 420)
+      : Math.min(Math.max(w * 0.55, 400), 640);
+    return { w, h };
+  }
+
+  let { w: W, h: H } = getSize();
+  canvas.width  = W;
+  canvas.height = H;
+  canvas.style.height = H + 'px';
+
+  const ctx = canvas.getContext('2d');
+  let CX = W/2, CY = H/2 - 8;
+  let R  = Math.min(W, H) * 0.40;
+
+  let rotX = 0.25, rotY = -0.3;
+  let dragging = false, lastMX = 0, lastMY = 0;
+  let touchId = null, lastTX = 0, lastTY = 0;
+  let hovered = null, autoSpin = true;
+
+  function ll2xyz(lat,lon){
+    const phi = (90-lat)*Math.PI/180, th = (lon+180)*Math.PI/180;
+    return { x:-Math.sin(phi)*Math.cos(th), y:Math.cos(phi), z:Math.sin(phi)*Math.sin(th) };
+  }
+  function project(p){
+    const cx=Math.cos(rotX),sx=Math.sin(rotX),cy=Math.cos(rotY),sy=Math.sin(rotY);
+    const nx=cy*p.x+sy*p.z, nz=-sy*p.x+cy*p.z;
+    const ny=cx*p.y-sx*nz, nz2=sx*p.y+cx*nz;
+    return { sx:CX+nx*R, sy:CY-ny*R, z:nz2 };
+  }
+
+  const allPts = [];
+  for(const [country, code] of Object.entries(COUNTRY_MAP)){
+    const coords = COORDS[country]; if(!coords) continue;
+    const d = DISTRICT_META[code[0]]; if(!d) continue;
+    allPts.push({ name:country, code, col:d.col, distName:d.name, p3:ll2xyz(coords[0],coords[1]) });
+  }
+
+  fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
+    .then(r=>r.json())
+    .then(w=>{ window._topo=w; loop(0); })
+    .catch(()=>{ window._topo=null; loop(0); });
+
+  function drawCountryOutlines(){
+    if(!window._topo) return;
+    const topo=window._topo;
+    ctx.strokeStyle='rgba(157,105,206,0.18)'; ctx.lineWidth=0.6;
+    ctx.fillStyle='rgba(157,105,206,0.04)';
+    function arc2ll(idx){
+      const raw=topo.arcs[idx<0?~idx:idx];
+      let x=0,y=0; const pts=[];
+      for(const [dx,dy] of raw){ x+=dx; y+=dy; pts.push([x,y]); }
+      const s=topo.transform.scale, t=topo.transform.translate;
+      const c=pts.map(([px,py])=>[px*s[0]+t[0], py*s[1]+t[1]]);
+      return idx<0?c.reverse():c;
+    }
+    function drawRing(ring){
+      let started=false;
+      for(const [lon,lat] of ring){
+        const p=project(ll2xyz(lat,lon));
+        if(p.z<0){ started=false; continue; }
+        started?ctx.lineTo(p.sx,p.sy):ctx.moveTo(p.sx,p.sy);
+        started=true;
+      }
+    }
+    function drawGeom(g){
+      const polys=g.type==='Polygon'?[g.arcs]:g.type==='MultiPolygon'?g.arcs:[];
+      polys.forEach(poly=>poly.forEach(ring=>{
+        ctx.beginPath();
+        drawRing(ring.flatMap(a=>arc2ll(a)));
+        ctx.closePath(); ctx.fill(); ctx.stroke();
+      }));
+    }
+    topo.objects.countries.geometries.forEach(g=>drawGeom(g));
+  }
+
+  let lastTime = 0;
+  function loop(ts){
+    requestAnimationFrame(loop);
+    if(ts - lastTime < 16) return;
+    lastTime = ts;
+    if(autoSpin && !dragging) rotY += 0.003;
+    ctx.clearRect(0,0,W,H);
+
+    // Globe base — fully transparent, no background fill at all
+
+    ctx.save(); ctx.beginPath(); ctx.arc(CX,CY,R,0,Math.PI*2); ctx.clip();
+    drawCountryOutlines();
+    ctx.restore();
+
+    // Grid lines — Pipoll purple, very subtle
+    ctx.strokeStyle='rgba(157,105,206,0.1)'; ctx.lineWidth=0.5;
+    for(let lat=-80;lat<=80;lat+=20){
+      ctx.beginPath(); let f=true;
+      for(let lon=-180;lon<=180;lon+=4){
+        const p=project(ll2xyz(lat,lon));
+        if(p.z<0){ f=true; continue; }
+        f?ctx.moveTo(p.sx,p.sy):ctx.lineTo(p.sx,p.sy); f=false;
+      }
+      ctx.stroke();
+    }
+    for(let lon=-180;lon<180;lon+=30){
+      ctx.beginPath(); let f=true;
+      for(let lat=-90;lat<=90;lat+=4){
+        const p=project(ll2xyz(lat,lon));
+        if(p.z<0){ f=true; continue; }
+        f?ctx.moveTo(p.sx,p.sy):ctx.lineTo(p.sx,p.sy); f=false;
+      }
+      ctx.stroke();
+    }
+
+    // Rim — soft purple atmospheric halo, matches page brand
+    const rim=ctx.createRadialGradient(CX,CY,R*.80,CX,CY,R);
+    rim.addColorStop(0,'rgba(157,105,206,0)');
+    rim.addColorStop(0.75,'rgba(157,105,206,0.1)');
+    rim.addColorStop(1,'rgba(255,162,240,0.22)');
+    ctx.beginPath(); ctx.arc(CX,CY,R,0,Math.PI*2); ctx.fillStyle=rim; ctx.fill();
+    ctx.strokeStyle='rgba(157,105,206,0.25)'; ctx.lineWidth=1; ctx.stroke();
+
+    const t = Date.now()/1000;
+    const front = allPts.filter(p=>project(p.p3).z>=0);
+    const back  = allPts.filter(p=>project(p.p3).z<0);
+
+    back.forEach(p=>{
+      const pr=project(p.p3);
+      ctx.beginPath(); ctx.arc(pr.sx,pr.sy,2.5,0,Math.PI*2);
+      ctx.fillStyle=p.col+'28'; ctx.fill();
+    });
+
+    front.sort((a,b)=>project(a.p3).z-project(b.p3).z);
+    front.forEach(p=>{
+      const pr=project(p.p3);
+      const isHov = hovered && hovered.name===p.name;
+      const dotR  = isHov ? 10 : 6;
+      const pulse = (Math.sin(t*2+Math.abs(pr.sx)*.03)+1)/2;
+
+      if(!isHov && pulse>0.65){
+        ctx.beginPath(); ctx.arc(pr.sx,pr.sy,dotR+7*((pulse-0.65)/0.35),0,Math.PI*2);
+        ctx.strokeStyle=p.col+'44'; ctx.lineWidth=1; ctx.stroke();
+      }
+      if(isHov){
+        ctx.beginPath(); ctx.arc(pr.sx,pr.sy,dotR+5+2*Math.sin(t*5),0,Math.PI*2);
+        ctx.strokeStyle=p.col+'bb'; ctx.lineWidth=2; ctx.stroke();
+      }
+
+      const g=ctx.createRadialGradient(pr.sx-dotR*.3,pr.sy-dotR*.3,0,pr.sx,pr.sy,dotR);
+      g.addColorStop(0,'#ffffff'); g.addColorStop(.35,p.col); g.addColorStop(1,p.col+'99');
+      ctx.beginPath(); ctx.arc(pr.sx,pr.sy,dotR,0,Math.PI*2); ctx.fillStyle=g; ctx.fill();
+
+      const vis=(pr.z+.05)/.35;
+      // Only draw text labels on wider screens where they don't crowd each other
+      if(W > 560 && vis > 0.35){
+        ctx.font='bold 10px monospace';
+        ctx.fillStyle=p.col+Math.round(Math.min(1,vis)*210).toString(16).padStart(2,'0');
+        ctx.fillText(p.code, pr.sx+dotR+3, pr.sy+4);
+      }
+      if(isHov){
+        const tw=Math.max(ctx.measureText(p.name).width, ctx.measureText(p.distName).width);
+        const bw=tw+24, lx=pr.sx+14, ly=pr.sy-12;
+        ctx.fillStyle='rgba(5,8,20,0.93)';
+        ctx.beginPath(); ctx.roundRect(lx-4,ly-16,bw,42,6); ctx.fill();
+        ctx.strokeStyle=p.col+'88'; ctx.lineWidth=1; ctx.stroke();
+        ctx.font='bold 14px monospace'; ctx.fillStyle=p.col;
+        ctx.fillText(p.code, lx+2, ly);
+        ctx.font='bold 11px monospace'; ctx.fillStyle='rgba(255,255,255,0.85)';
+        ctx.fillText(p.name, lx+2, ly+14);
+        ctx.font='10px monospace'; ctx.fillStyle='rgba(150,150,180,0.8)';
+        ctx.fillText(p.distName, lx+2, ly+26);
+      }
+    });
+  }
+
+  /* Mouse events */
+  canvas.addEventListener('mousedown',e=>{
+    dragging=true; autoSpin=false;
+    lastMX=e.clientX; lastMY=e.clientY;
+    canvas.style.cursor='grabbing';
+  });
+  window.addEventListener('mouseup',()=>{
+    dragging=false; canvas.style.cursor='grab';
+    setTimeout(()=>autoSpin=true, 2500);
+  });
+  canvas.addEventListener('mousemove',e=>{
+    if(dragging){
+      rotY+=(e.clientX-lastMX)*.007; rotX+=(e.clientY-lastMY)*.007;
+      rotX=Math.max(-1.4,Math.min(1.4,rotX));
+      lastMX=e.clientX; lastMY=e.clientY;
+      hovered=null; tip.style.opacity=0; return;
+    }
+    const rect=canvas.getBoundingClientRect();
+    const mx=(e.clientX-rect.left)*(W/rect.width), my=(e.clientY-rect.top)*(H/rect.height);
+    let closest=null, best=16;
+    allPts.forEach(p=>{
+      const pr=project(p.p3); if(pr.z<0) return;
+      const d=Math.hypot(pr.sx-mx,pr.sy-my);
+      if(d<best){ best=d; closest=p; }
+    });
+    hovered=closest;
+    if(closest){
+      tip.innerHTML=`<span style="color:${closest.col};font-size:16px;font-weight:900">${closest.code}</span>&nbsp;&nbsp;<span style="color:#ddd">${closest.name}</span><br><span style="color:#777;font-size:11px">${closest.distName}</span>`;
+      const rct=canvas.getBoundingClientRect();
+      tip.style.left=Math.min(e.clientX-rct.left+16,W-220)+'px';
+      tip.style.top=Math.max(e.clientY-rct.top-55,8)+'px';
+      tip.style.opacity=1; canvas.style.cursor='pointer';
+    } else { tip.style.opacity=0; if(!dragging) canvas.style.cursor='grab'; }
+  });
+
+  /* Touch events for mobile */
+  canvas.addEventListener('touchstart',e=>{
+    if(e.touches.length===1){
+      const t=e.touches[0];
+      touchId=t.identifier; lastTX=t.clientX; lastTY=t.clientY;
+      dragging=true; autoSpin=false;
+    }
+    e.preventDefault();
+  },{ passive:false });
+  canvas.addEventListener('touchmove',e=>{
+    if(!dragging) return;
+    for(const t of e.touches){
+      if(t.identifier===touchId){
+        rotY+=(t.clientX-lastTX)*.007; rotX+=(t.clientY-lastTY)*.007;
+        rotX=Math.max(-1.4,Math.min(1.4,rotX));
+        lastTX=t.clientX; lastTY=t.clientY; break;
+      }
+    }
+    e.preventDefault();
+  },{ passive:false });
+  canvas.addEventListener('touchend',()=>{
+    dragging=false; touchId=null;
+    setTimeout(()=>autoSpin=true, 2500);
+  });
+
+  /* Legend */
+  Object.entries(DISTRICT_META).forEach(([l,d])=>{
+    const el=document.createElement('div');
+    el.style.cssText=`display:flex;align-items:center;gap:5px;font-size:11px;font-family:monospace;color:#aaa;padding:3px 8px;background:rgba(255,255,255,0.05);border:0.5px solid rgba(255,255,255,0.1);border-radius:5px`;
+    el.innerHTML=`<span style="width:7px;height:7px;border-radius:50%;background:${d.col};display:inline-block;flex-shrink:0"></span><b style="color:${d.col}">${l}</b>&nbsp;${d.name}`;
+    legEl.appendChild(el);
+  });
+
+  /* Resize */
+  const ro = new ResizeObserver(()=>{
+    const s = getSize();
+    W=s.w; H=s.h;
+    canvas.width=W; canvas.height=H; canvas.style.height=H+'px';
+    CX=W/2; CY=H/2-8;
+    R=Math.min(W,H)*.40;
+  });
+  ro.observe(container);
+})();
+</script>
+
+</body>
+</html>
