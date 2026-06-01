@@ -310,8 +310,8 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('scroll', animateCountersOnScroll, { passive: true });
     setTimeout(animateCountersOnScroll, 100);
 
-    // Countdown Timer to May 30, 2026
-    const LAUNCH_DATE = new Date('2026-05-30T00:00:00');
+    // Countdown Timer to June 12, 2026
+    const LAUNCH_DATE = new Date('2026-06-12T00:00:00');
 
     const pad = (n) => String(n).padStart(2, '0');
 
