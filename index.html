@@ -65,6 +65,18 @@
         <a href="index.html">Home</a>
         <a href="blog.html">Blog</a>
         <a href="contact.html">Contact</a>
+        <a href="chartTool/index.html" onclick="openGraphTool(event)">Graph Tool</a>
+        <script>
+            function openGraphTool(event) {
+                event.preventDefault();
+                const password = prompt("Enter password:");
+                if (password === "pessi2026") {
+                    window.location.href = "privacy.html";
+                } else if (password !== null) {
+                    alert("Incorrect password.");
+                }
+            }
+        </script>
         <div class="mobile-dropdown">
             <span class="mobile-dropdown-trigger">Legal ▾</span>
             <div class="mobile-dropdown-menu">
