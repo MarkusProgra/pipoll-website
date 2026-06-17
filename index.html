@@ -31,23 +31,23 @@
                 <a href="index.html">Home</a>
                 <a href="blog.html">Blog</a>
                 <a href="contact.html">Contact</a>
-                <div class="nav-dropdown">
-                    <span class="dropdown-trigger">Legal ▾</span>
-                    <div class="dropdown-menu">
-                        <a href="terms.html">Terms &amp; Conditions</a>
-                        <a href="privacy.html">Privacy Policy</a>
-                        <a href="chartTool/index.html" onclick="openGraphTool(event)">Graph Tool</a>
+                <a href="chartTool/index.html" onclick="openGraphTool(event)">Graph Tool</a>
                         <script>
                             function openGraphTool(event) {
                                 event.preventDefault();
                                 const password = prompt("Enter password:");
                                 if (password === "pessi2026") {
-                                    window.location.href = "privacy.html";
+                                    window.location.href = "chartTool/index.html";
                                 } else if (password !== null) {
                                     alert("Incorrect password.");
                                 }
                             }
                         </script>
+                <div class="nav-dropdown">
+                    <span class="dropdown-trigger">Legal ▾</span>
+                    <div class="dropdown-menu">
+                        <a href="terms.html">Terms &amp; Conditions</a>
+                        <a href="privacy.html">Privacy Policy</a>
                     </div>
                 </div>
             </div>
@@ -71,7 +71,7 @@
                 event.preventDefault();
                 const password = prompt("Enter password:");
                 if (password === "pessi2026") {
-                    window.location.href = "privacy.html";
+                    window.location.href = "chartTool/index.html";
                 } else if (password !== null) {
                     alert("Incorrect password.");
                 }
