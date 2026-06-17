@@ -14,7 +14,7 @@ except ImportError:
     PANDAS_AVAILABLE = False
 
 PORT = 1111
-DIRECTORY = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'public')
+DIRECTORY = os.path.dirname(os.path.abspath(__file__))
 
 class ChartHandler(http.server.SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
