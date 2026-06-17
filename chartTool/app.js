@@ -28,11 +28,16 @@ fileInput.addEventListener('change', async (e) => {
       body: formData
     });
 
-    const data = await response.json();
-
     if (!response.ok) {
-      throw new Error(data.error || 'Failed to parse Excel file');
+              let errorMsg = 'Failed to parse Excel file';
+              try {
+                          const errData = await response.json();
+                          errorMsg = errData.error || errorMsg;
+              } catch (_) {}
+              throw new Error(errorMsg);
     }
+
+          const data = await response.json();
 
     chartData = data;
     drawChart(data.x, data.y, colorPicker.value, parseInt(lineWidthInput.value));
