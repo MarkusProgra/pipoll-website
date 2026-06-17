@@ -11,443 +11,361 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" type="image/png" href="favicon.png">
+
+    <!-- Graph Tool Modal Styles -->
+    <style>
+        .nav-graph-tool {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.78rem;
+            font-weight: 500;
+            letter-spacing: 0.03em;
+            color: rgba(255,255,255,0.45);
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 6px;
+            padding: 4px 10px;
+            cursor: pointer;
+            transition: color 0.2s, background 0.2s, border-color 0.2s;
+            user-select: none;
+            text-decoration: none;
+        }
+        .nav-graph-tool:hover {
+            color: rgba(255,255,255,0.7);
+            background: rgba(255,255,255,0.09);
+            border-color: rgba(255,255,255,0.18);
+        }
+        .nav-graph-tool .gt-lock-icon {
+            width: 11px;
+            height: 11px;
+            opacity: 0.6;
+            flex-shrink: 0;
+        }
+        .nav-graph-tool .gt-label {
+            font-size: 0.75rem;
+        }
+        .nav-graph-tool .gt-status {
+            font-size: 0.62rem;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+            opacity: 0.55;
+            margin-left: 2px;
+        }
+        #graph-tool-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: rgba(0,0,0,0.55);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            align-items: center;
+            justify-content: center;
+        }
+        #graph-tool-overlay.active {
+            display: flex;
+        }
+        #graph-tool-modal {
+            background: #1a1a2e;
+            border: 1px solid rgba(157,105,206,0.3);
+            border-radius: 14px;
+            padding: 36px 40px 32px;
+            width: 320px;
+            box-shadow: 0 24px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(157,105,206,0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            animation: gtModalIn 0.22s cubic-bezier(0.34,1.56,0.64,1);
+            position: relative;
+        }
+        @keyframes gtModalIn {
+            from { opacity: 0; transform: scale(0.88) translateY(10px); }
+            to   { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .gt-modal-icon {
+            width: 44px;
+            height: 44px;
+            background: rgba(157,105,206,0.15);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 4px;
+        }
+        .gt-modal-icon svg { color: #9D69CE; }
+        #graph-tool-modal h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #fff;
+            margin: 0;
+            letter-spacing: 0.02em;
+        }
+        #graph-tool-modal p {
+            font-size: 0.78rem;
+            color: rgba(255,255,255,0.45);
+            margin: -8px 0 0;
+            text-align: center;
+        }
+        #gt-password-input {
+            width: 100%;
+            box-sizing: border-box;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 0.9rem;
+            color: #fff;
+            outline: none;
+            font-family: inherit;
+            letter-spacing: 0.08em;
+            transition: border-color 0.2s;
+        }
+        #gt-password-input:focus { border-color: rgba(157,105,206,0.6); }
+        #gt-password-input.error {
+            border-color: rgba(220,80,80,0.7);
+            animation: gtShake 0.35s;
+        }
+        @keyframes gtShake {
+            0%,100% { transform: translateX(0); }
+            20%,60%  { transform: translateX(-6px); }
+            40%,80%  { transform: translateX(6px); }
+        }
+        #gt-error-msg {
+            font-size: 0.72rem;
+            color: rgba(220,80,80,0.85);
+            min-height: 16px;
+            text-align: center;
+        }
+        #gt-submit-btn {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: none;
+            background: linear-gradient(135deg, #9D69CE 0%, #7b4fa8 100%);
+            color: #fff;
+            font-size: 0.88rem;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        #gt-submit-btn:hover { opacity: 0.88; }
+        #gt-close-btn {
+            position: absolute;
+            top: 14px;
+            right: 16px;
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.3);
+            font-size: 1.3rem;
+            cursor: pointer;
+            line-height: 1;
+            padding: 4px;
+            transition: color 0.2s;
+        }
+        #gt-close-btn:hover { color: rgba(255,255,255,0.7); }
+    </style>
 </head>
 <body>
-    <!-- Animated Background -->
-    <div class="bg-gradient">
-        <div class="bg-grid"></div>
-        <div class="bg-orb bg-orb-1"></div>
-        <div class="bg-orb bg-orb-2"></div>
-        <div class="bg-orb bg-orb-3"></div>
-    </div>
+<!-- Animated Background -->
+<div class="bg-gradient">
+    <div class="bg-grid"></div>
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+    <div class="bg-orb bg-orb-3"></div>
+</div>
 
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="#" class="nav-logo">
-                <img src="logo.png" alt="Pipoll" class="logo-img">
-            </a>
-            <div class="nav-links">
-                <a href="index.html">Home</a>
-                <a href="blog.html">Blog</a>
-                <a href="contact.html">Contact</a>
-                <div class="nav-dropdown">
-                    <span class="dropdown-trigger">Legal ▾</span>
-                    <div class="dropdown-menu">
-                        <a href="terms.html">Terms &amp; Conditions</a>
-                        <a href="privacy.html">Privacy Policy</a>
-                    </div>
+<!-- Navigation -->
+<nav class="navbar">
+    <div class="nav-container">
+        <a href="#" class="nav-logo">
+            <img src="logo.png" alt="Pipoll" class="logo-img">
+        </a>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="blog.html">Blog</a>
+            <a href="contact.html">Contact</a>
+            <div class="nav-dropdown">
+                <span class="dropdown-trigger">Legal &#9662;</span>
+                <div class="dropdown-menu">
+                    <a href="terms.html">Terms &amp; Conditions</a>
+                    <a href="privacy.html">Privacy Policy</a>
                 </div>
             </div>
-            <a href="#download" class="nav-cta">Start Investing</a>
-            <button class="nav-toggle" aria-label="Menu">
-                <span></span>
-                <span></span>
-                <span></span>
+            <!-- Graph Tool nav button -->
+            <button class="nav-graph-tool" id="graph-tool-btn" aria-label="Graph Tool - Locked">
+                <svg class="gt-lock-icon" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M11.5 7V5.5a3.5 3.5 0 0 0-7 0V7H3v6.5A1.5 1.5 0 0 0 4.5 15h7A1.5 1.5 0 0 0 13 13.5V7h-1.5zm-5.25-1.5a1.75 1.75 0 0 1 3.5 0V7h-3.5V5.5zM8 10a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                </svg>
+                <span class="gt-label">Graph Tool</span>
+                <span class="gt-status">locked</span>
             </button>
         </div>
-    </nav>
-
-    <!-- Mobile Menu -->
-    <div class="mobile-menu">
-        <a href="index.html">Home</a>
-        <a href="blog.html">Blog</a>
-        <a href="contact.html">Contact</a>
-        <div class="mobile-dropdown">
-            <span class="mobile-dropdown-trigger">Legal ▾</span>
-            <div class="mobile-dropdown-menu">
-                <a href="terms.html">Terms &amp; Conditions</a>
-                <a href="privacy.html">Privacy Policy</a>
-            </div>
-        </div>
-        <a href="#download" class="mobile-cta">Start Investing</a>
+        <a href="#download" class="nav-cta">Start Investing</a>
+        <button class="nav-toggle" aria-label="Menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
     </div>
+</nav>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-content">
-            <div class="hero-badge animate-from-top">
-                <span class="badge-dot"></span>
-                Backed by Silicon Valley
-            </div>
-            <h1 class="hero-title animate-from-top">
-                Invest in<br>
-                <span class="gradient-text">humans</span>
-            </h1>
-            <p class="hero-subtitle animate-from-top">
-                Trade on people and earn money from their success. Invest in friends, family or famous people!
-                <strong>The human economy.</strong>
-            </p>
-            <div class="hero-cta animate-from-top">
-                <button class="btn-primary btn-disabled" disabled>
-                    <span class="btn-icon">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
-                        </svg>
-                    </span>
-                    Download for iOS
-                </button>
-                <div class="countdown-container">
-                    <span class="countdown-label">Available in</span>
-                    <div class="countdown-timer" id="hero-countdown">
-                        <div class="countdown-unit">
-                            <span class="countdown-num" id="hero-days">00</span>
-                            <span class="countdown-unit-label">days</span>
-                        </div>
-                        <span class="countdown-sep">:</span>
-                        <div class="countdown-unit">
-                            <span class="countdown-num" id="hero-hours">00</span>
-                            <span class="countdown-unit-label">hrs</span>
-                        </div>
-                        <span class="countdown-sep">:</span>
-                        <div class="countdown-unit">
-                            <span class="countdown-num" id="hero-mins">00</span>
-                            <span class="countdown-unit-label">min</span>
-                        </div>
-                        <span class="countdown-sep">:</span>
-                        <div class="countdown-unit">
-                            <span class="countdown-num" id="hero-secs">00</span>
-                            <span class="countdown-unit-label">sec</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="hero-stats">
-                <div class="hero-stat">
-                    <div class="stat-value gradient-text" data-count="10000">10K+</div>
-                    <div class="stat-label">Investors</div>
-                </div>
-                <div class="hero-stat-divider"></div>
-                <div class="hero-stat">
-                    <div class="stat-value gradient-text" data-count="2000000">$2M+</div>
-                    <div class="stat-label">Value Created</div>
-                </div>
-                <div class="hero-stat-divider"></div>
-                <div class="hero-stat">
-                    <div class="stat-value gradient-text" data-count="500000">500K+</div>
-                    <div class="stat-label">Habits Built</div>
-                </div>
-            </div>
-
-            <!-- Compact mobile stats row -->
-            <div class="hero-stats-compact animate-from-top">
-                <div class="hero-stat">
-                    <div class="stat-value gradient-text" data-count="10000">60K+</div>
-                    <div class="stat-label">Funded</div>
-                </div>
-                <div class="hero-stat-divider"></div>
-                <div class="hero-stat">
-                    <div class="stat-value gradient-text" data-count="2000000">$2M+</div>
-                    <div class="stat-label">Value</div>
-                </div>
-                <div class="hero-stat-divider"></div>
-                <div class="hero-stat">
-                    <div class="stat-value gradient-text" data-count="500000">500k+</div>
-                    <div class="stat-label">Habits</div>
-                </div>
-            </div>
+<!-- Graph Tool Password Modal -->
+<div id="graph-tool-overlay" role="dialog" aria-modal="true" aria-labelledby="gt-modal-title">
+    <div id="graph-tool-modal">
+        <button id="gt-close-btn" aria-label="Close">&times;</button>
+        <div class="gt-modal-icon">
+            <svg width="22" height="22" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path d="M11.5 7V5.5a3.5 3.5 0 0 0-7 0V7H3v6.5A1.5 1.5 0 0 0 4.5 15h7A1.5 1.5 0 0 0 13 13.5V7h-1.5zm-5.25-1.5a1.75 1.75 0 0 1 3.5 0V7h-3.5V5.5zM8 10a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+            </svg>
         </div>
-        <div class="hero-visual">
-            <!-- Desktop: Phone Showcase (hidden on mobile) -->
-            <div class="phone-showcase desktop-only">
-                <div class="phone-mockup phone-main">
-                    <div class="phone-frame">
-                        <div class="phone-screen">
-                            <img src="app-screenshot.png" alt="Pipoll App" class="app-screenshot">
-                        </div>
-                    </div>
-                    <div class="phone-glow"></div>
-                </div>
-                <div class="phone-mockup phone-secondary phone-left">
-                    <div class="phone-frame">
-                        <div class="phone-screen">
-                            <img src="screenshot-habits.png" alt="Habits Screen" class="app-screenshot">
-                        </div>
-                    </div>
-                </div>
-                <div class="phone-mockup phone-secondary phone-right">
-                    <div class="phone-frame">
-                        <div class="phone-screen">
-                            <img src="screenshot-market.png" alt="Market Screen" class="app-screenshot">
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <h3 id="gt-modal-title">Graph Tool Access</h3>
+        <p>Enter your access code to continue</p>
+        <input type="password" id="gt-password-input" placeholder="Access code" autocomplete="off" />
+        <div id="gt-error-msg"></div>
+        <button id="gt-submit-btn">Unlock</button>
+    </div>
+</div>
 
-            <!-- Mobile: Swipeable Card Stack (hidden on desktop) -->
-            <div class="card-swiper mobile-only" id="cardSwiper">
-                <div class="card-stack" id="cardStack">
-                    <img src="3.png" alt="App Screen 3" class="swipe-card" data-card-index="4" style="z-index:1;" draggable="false">
-                    <img src="5.png" alt="App Screen 5" class="swipe-card" data-card-index="3" style="z-index:2;" draggable="false">
-                    <img src="2.png" alt="App Screen 2" class="swipe-card" data-card-index="2" style="z-index:3;" draggable="false">
-                    <img src="4.png" alt="App Screen 4" class="swipe-card" data-card-index="1" style="z-index:4;" draggable="false">
-                    <img src="1.png" alt="App Screen 1" class="swipe-card top-card" data-card-index="0" style="z-index:5;" draggable="false">
-                </div>
-                <div class="swipe-hint">
-                    <span class="swipe-hint-arrow">&#8592;</span>
-                    <span class="swipe-hint-text">swipe to reveal</span>
-                    <span class="swipe-hint-arrow">&#8594;</span>
-                </div>
-                <div class="card-progress-dots" id="cardDots">
-                    <span class="card-dot active"></span>
-                    <span class="card-dot"></span>
-                    <span class="card-dot"></span>
-                    <span class="card-dot"></span>
-                    <span class="card-dot"></span>
-                </div>
-            </div>
+<script>
+(function() {
+    var btn = document.getElementById('graph-tool-btn');
+    var overlay = document.getElementById('graph-tool-overlay');
+    var input = document.getElementById('gt-password-input');
+    var errorMsg = document.getElementById('gt-error-msg');
+    var submitBtn = document.getElementById('gt-submit-btn');
+    var closeBtn = document.getElementById('gt-close-btn');
+    function openModal() {
+        overlay.classList.add('active');
+        errorMsg.textContent = '';
+        input.value = '';
+        input.classList.remove('error');
+        setTimeout(function() { input.focus(); }, 50);
+    }
+    function closeModal() {
+        overlay.classList.remove('active');
+        input.value = '';
+        errorMsg.textContent = '';
+        input.classList.remove('error');
+    }
+    function attemptUnlock() {
+        var val = input.value;
+        if (val === 'pessi2026') {
+            window.location.href = 'chartTool/index.html';
+        } else {
+            input.classList.remove('error');
+            void input.offsetWidth;
+            input.classList.add('error');
+            errorMsg.textContent = 'Incorrect access code.';
+            input.value = '';
+            setTimeout(function() { input.focus(); }, 10);
+        }
+    }
+    btn.addEventListener('click', openModal);
+    submitBtn.addEventListener('click', attemptUnlock);
+    closeBtn.addEventListener('click', closeModal);
+    input.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') attemptUnlock();
+        if (e.key === 'Escape') closeModal();
+    });
+    overlay.addEventListener('click', function(e) {
+        if (e.target === overlay) closeModal();
+    });
+})();
+</script>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu">
+    <a href="index.html">Home</a>
+    <a href="blog.html">Blog</a>
+    <a href="contact.html">Contact</a>
+    <div class="mobile-dropdown">
+        <span class="mobile-dropdown-trigger">Legal &#9662;</span>
+        <div class="mobile-dropdown-menu">
+            <a href="terms.html">Terms &amp; Conditions</a>
+            <a href="privacy.html">Privacy Policy</a>
         </div>
-    </section>
+    </div>
+    <a href="#download" class="mobile-cta">Start Investing</a>
+</div>
 
-    <!-- Manifesto Section -->
-    <section id="manifesto" class="manifesto">
-        <div class="manifesto-container">
-            <div class="manifesto-content">
-                <span class="section-tag">The New Economy</span>
-                <h2 class="manifesto-title">
-                    Humans are the<br>
-                    <span class="gradient-text">ultimate asset class</span>
-                </h2>
-                <p class="manifesto-text">
-                    For too long, we've treated ourselves as consumers.
-                    But what if you became the product? Not in the exploitative sense &mdash;
-                    in the <strong>empowering</strong> one.
-                </p>
-                <p class="manifesto-text manifesto-text-secondary">
-                    Every habit you build, every streak you maintain, every day you show up &mdash;
-                    you're increasing your value. Your stock rises. People notice.
-                    They invest in you. You invest in them.
-                </p>
-                <p class="manifesto-text manifesto-text-secondary">
-                    This isn't just habit tracking. This is the <strong>human economy</strong> &mdash;
-                    where personal development has tangible value, and consistency compounds
-                    like the best investment portfolio.
-                </p>
-                <div class="manifesto-cta">
-                    <button class="btn-primary btn-disabled" disabled>
-                        <span class="btn-icon">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
-                            </svg>
-                        </span>
-                        Coming May 30
-                    </button>
-                </div>
-            </div>
-            <div class="manifesto-visual">
-                <div class="value-card">
-                    <div class="value-card-header">
-                        <div class="value-avatar" style="background: linear-gradient(135deg, #9D69CE, #FFA2F0);"></div>
-                        <div class="value-info">
-                            <div class="value-name">You, Inc.</div>
-                            <div class="value-ticker">$YOU</div>
-                        </div>
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-content">
+        <div class="hero-badge animate-from-top">
+            <span class="badge-dot"></span>
+            Backed by Silicon Valley
+        </div>
+        <h1 class="hero-title animate-from-top">
+            Invest in<br>
+            <span class="gradient-text">humans</span>
+        </h1>
+        <p class="hero-subtitle animate-from-top">
+            Trade on people and earn money from their success. Invest in friends, family or famous people!
+            <strong>The human economy.</strong>
+        </p>
+        <div class="hero-cta animate-from-top">
+            <button class="btn-primary btn-disabled" disabled>
+                <span class="btn-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
+                    </svg>
+                </span>
+                Download for iOS
+            </button>
+            <div class="countdown-container">
+                <span class="countdown-label">Available in</span>
+                <div class="countdown-timer" id="hero-countdown">
+                    <div class="countdown-unit">
+                        <span class="countdown-num" id="hero-days">00</span>
+                        <span class="countdown-unit-label">days</span>
                     </div>
-                    <div class="value-chart">
-                        <div class="value-line">
-                            <svg viewBox="0 0 300 100" preserveAspectRatio="none">
-                                <path d="M0,80 L50,75 L80,60 L100,65 L130,45 L160,50 L190,30 L220,35 L250,20 L300,10"
-                                      class="value-path"/>
-                                <defs>
-                                    <linearGradient id="valueGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                                        <stop offset="0%" style="stop-color:#9D69CE;stop-opacity:0.3"/>
-                                        <stop offset="100%" style="stop-color:#9D69CE;stop-opacity:0"/>
-                                    </linearGradient>
-                                </defs>
-                                <path d="M0,80 L50,75 L80,60 L100,65 L130,45 L160,50 L190,30 L220,35 L250,20 L300,10 L300,100 L0,100 Z"
-                                      class="value-fill"/>
-                            </svg>
-                        </div>
+                    <span class="countdown-sep">:</span>
+                    <div class="countdown-unit">
+                        <span class="countdown-num" id="hero-hours">00</span>
+                        <span class="countdown-unit-label">hrs</span>
                     </div>
-                    <div class="value-stats">
-                        <div class="value-stat">
-                            <div class="value-stat-label">Current Value</div>
-                            <div class="value-stat-number gradient-text">$147.50</div>
-                        </div>
-                        <div class="value-stat">
-                            <div class="value-stat-label">All Time High</div>
-                            <div class="value-stat-number">$152.00</div>
-                        </div>
-                        <div class="value-stat positive">
-                            <div class="value-stat-label">Change</div>
-                            <div class="value-stat-number">+47.5%</div>
-                        </div>
+                    <span class="countdown-sep">:</span>
+                    <div class="countdown-unit">
+                        <span class="countdown-num" id="hero-mins">00</span>
+                        <span class="countdown-unit-label">min</span>
+                    </div>
+                    <span class="countdown-sep">:</span>
+                    <div class="countdown-unit">
+                        <span class="countdown-num" id="hero-secs">00</span>
+                        <span class="countdown-unit-label">sec</span>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
-
-    <!-- How It Works Section -->
-    <section id="how-it-works" class="how-it-works">
-        <div class="section-container">
-            <div class="section-header">
-                <span class="section-tag">How it works</span>
-                <h2 class="section-title">Build your portfolio<br>one habit at a time</h2>
+        <div class="hero-stats">
+            <div class="hero-stat">
+                <div class="stat-value gradient-text" data-count="10000">10K+</div>
+                <div class="stat-label">Investors</div>
             </div>
-            <div class="steps-container">
-                <div class="step">
-                    <div class="step-number">01</div>
-                    <div class="step-content">
-                        <h3>Create Your Stock</h3>
-                        <p>Set up your personal profile. You're now a publicly traded human.</p>
-                    </div>
-                </div>
-                <div class="step">
-                    <div class="step-number">02</div>
-                    <div class="step-content">
-                        <h3>List Your Habits</h3>
-                        <p>Choose up to 4 habits. These are your revenue streams.</p>
-                    </div>
-                </div>
-                <div class="step">
-                    <div class="step-number">03</div>
-                    <div class="step-content">
-                        <h3>Check In Daily</h3>
-                        <p>Mark habits complete. Your stock value rises with consistency.</p>
-                    </div>
-                </div>
-                <div class="step">
-                    <div class="step-number">04</div>
-                    <div class="step-content">
-                        <h3>Watch Your Value Grow</h3>
-                        <p>Hit streaks. Unlock rewards. Become a blue-chip human.</p>
-                    </div>
-                </div>
+            <div class="hero-stat-divider"></div>
+            <div class="hero-stat">
+                <div class="stat-value gradient-text" data-count="500">500+</div>
+                <div class="stat-label">People Listed</div>
+            </div>
+            <div class="hero-stat-divider"></div>
+            <div class="hero-stat">
+                <div class="stat-value gradient-text" data-count="98">98%</div>
+                <div class="stat-label">Satisfaction</div>
             </div>
         </div>
-    </section>
-
-    <!-- Features Section -->
-    <section id="features" class="features">
-        <div class="section-container">
-            <div class="section-header">
-                <span class="section-tag">Features</span>
-                <h2 class="section-title">Everything you need to<br>become a blue-chip human</h2>
-            </div>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon" style="background: linear-gradient(135deg, #9D69CE, #FFA2F0);">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M12 2v20M2 12h20"/>
-                            <circle cx="12" cy="12" r="3"/>
-                        </svg>
-                    </div>
-                    <h3>Personal Stock</h3>
-                    <p>You are the stock. Watch your value rise as you complete habits and maintain streaks.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon" style="background: linear-gradient(135deg, #7CE16B, #9D69CE);">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
-                        </svg>
-                    </div>
-                    <h3>Habit Tracking</h3>
-                    <p>Track up to 4 custom habits with yes/no daily check-ins. See your progress over time.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon" style="background: linear-gradient(135deg, #FFA2F0, #F9CF58);">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
-                        </svg>
-                    </div>
-                    <h3>Streak Rewards</h3>
-                    <p>Hit 100-day streaks and unlock rare achievements. Consistency pays off.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon" style="background: linear-gradient(135deg, #F9CF58, #FFA2F0);">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-                            <circle cx="9" cy="7" r="4"/>
-                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-                            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-                        </svg>
-                    </div>
-                    <h3>Social Market</h3>
-                    <p>See other users' stocks. Get investors. Build your network of accountability.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon" style="background: linear-gradient(135deg, #9D69CE, #7CE16B);">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                            <line x1="16" y1="2" x2="16" y2="6"/>
-                            <line x1="8" y1="2" x2="8" y2="6"/>
-                            <line x1="3" y1="10" x2="21" y2="10"/>
-                        </svg>
-                    </div>
-                    <h3>Daily Reminders</h3>
-                    <p>Never miss a day. Get notified to check in and keep your streak alive.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon" style="background: linear-gradient(135deg, #FFA2F0, #9D69CE);">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="12" cy="12" r="10"/>
-                            <path d="M12 6v6l4 2"/>
-                        </svg>
-                    </div>
-                    <h3>Time Insights</h3>
-                    <p>Visualize your progress with beautiful charts. See your growth at a glance.</p>
-                </div>
+    </div>
+    <div class="hero-visual">
+        <div class="phone-mockup animate-from-right">
+            <div class="phone-screen">
+                <img src="app-screenshot.png" alt="Pipoll App" class="app-screenshot">
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- CTA Section -->
-    <section id="download" class="download-cta">
-        <div class="cta-container">
-            <div class="cta-content">
-                <h2 class="cta-title">Ready to go public?</h2>
-                <p class="cta-subtitle">Join thousands of humans building value through daily habits.</p>
-                <button class="btn-primary btn-large btn-disabled" disabled>
-                    <span class="btn-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
-                        </svg>
-                    </span>
-                    Coming May 30
-                </button>
-                <div class="countdown-container cta-countdown">
-                    <span class="countdown-label">Launching in</span>
-                    <div class="countdown-timer" id="cta-countdown">
-                        <div class="countdown-unit">
-                            <span class="countdown-num" id="cta-days">00</span>
-                            <span class="countdown-unit-label">days</span>
-                        </div>
-                        <span class="countdown-sep">:</span>
-                        <div class="countdown-unit">
-                            <span class="countdown-num" id="cta-hours">00</span>
-                            <span class="countdown-unit-label">hrs</span>
-                        </div>
-                        <span class="countdown-sep">:</span>
-                        <div class="countdown-unit">
-                            <span class="countdown-num" id="cta-mins">00</span>
-                            <span class="countdown-unit-label">min</span>
-                        </div>
-                        <span class="countdown-sep">:</span>
-                        <div class="countdown-unit">
-                            <span class="countdown-num" id="cta-secs">00</span>
-                            <span class="countdown-unit-label">sec</span>
-                        </div>
-                    </div>
-                </div>
-                <p class="cta-note">Free to start. No credit card required.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-container">
-            <div class="footer-brand">
-                <img src="logo.png" alt="Pipoll" class="footer-logo">
-                <p class="footer-tagline">The Human Economy.</p>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2026 Pipoll. All rights reserved.</p>
-        </div>
-    </footer>
-
-    <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
