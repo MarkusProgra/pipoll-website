@@ -12,6 +12,534 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="contact.css">
     <link rel="icon" type="image/png" href="favicon.png">
+
+    <!-- Identity Verification: bar + modal styles (self-contained, uses your theme vars with safe fallbacks) -->
+    <style>
+        .verify-section {
+            padding: 0 2rem 4rem;
+        }
+
+        .verify-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .verify-bar {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.9rem 1.5rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(157, 105, 206, 0.25);
+            border-radius: var(--radius-full, 9999px);
+            cursor: pointer;
+            font-family: var(--font-main, 'Inter', -apple-system, BlinkMacSystemFont, sans-serif);
+            text-align: left;
+            color: var(--light, #FDFCF3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .verify-bar::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, rgba(157, 105, 206, 0.08), rgba(255, 162, 240, 0.08));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .verify-bar:hover {
+            border-color: rgba(157, 105, 206, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(157, 105, 206, 0.15);
+        }
+
+        .verify-bar:hover::before {
+            opacity: 1;
+        }
+
+        .verify-bar-icon {
+            flex-shrink: 0;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius-full, 9999px);
+            background: rgba(157, 105, 206, 0.12);
+            position: relative;
+            z-index: 1;
+        }
+
+        .verify-bar-text {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.15rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .verify-bar-text strong {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--light, #FDFCF3);
+        }
+
+        .verify-bar-text span {
+            font-size: 0.85rem;
+            color: var(--gray-400, #a3a3a3);
+        }
+
+        .verify-bar-arrow {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--secondary, #FFA2F0);
+            position: relative;
+            z-index: 1;
+            transition: transform 0.3s ease;
+        }
+
+        .verify-bar:hover .verify-bar-arrow {
+            transform: translateX(4px);
+        }
+
+        /* Modal — z-index above navbar (1000) and mobile menu (999) */
+        .verify-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 10, 10, 0.75);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .verify-modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .verify-modal {
+            width: 100%;
+            max-width: 480px;
+            max-height: 90vh;
+            overflow-y: auto;
+            background: #121014;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: var(--radius-xl, 24px);
+            box-shadow: var(--shadow-2xl, 0 25px 50px -12px rgba(0, 0, 0, 0.25)), 0 0 80px rgba(157, 105, 206, 0.15);
+            padding: 2rem;
+            position: relative;
+            font-family: var(--font-main, 'Inter', -apple-system, BlinkMacSystemFont, sans-serif);
+            color: var(--light, #FDFCF3);
+            transform: translateY(20px) scale(0.97);
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .verify-modal-overlay.active .verify-modal {
+            transform: translateY(0) scale(1);
+        }
+
+        .verify-modal-close {
+            position: absolute;
+            top: 1.25rem;
+            right: 1.25rem;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius-full, 9999px);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--gray-400, #a3a3a3);
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .verify-modal-close:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--light, #FDFCF3);
+        }
+
+        .verify-modal-header {
+            text-align: center;
+            margin-bottom: 1.75rem;
+        }
+
+        .verify-modal-badge {
+            width: 76px;
+            height: 76px;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius-full, 9999px);
+            background: radial-gradient(circle, rgba(157, 105, 206, 0.28) 0%, rgba(157, 105, 206, 0.06) 65%, transparent 100%);
+        }
+
+        .verify-modal-header h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            margin-bottom: 0.4rem;
+        }
+
+        .verify-modal-header p {
+            font-size: 0.95rem;
+            color: var(--gray-400, #a3a3a3);
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .verify-guidelines {
+            background: rgba(157, 105, 206, 0.06);
+            border: 1px solid rgba(157, 105, 206, 0.2);
+            border-radius: var(--radius-lg, 16px);
+            padding: 1.25rem 1.25rem 1.1rem;
+            margin-bottom: 1.75rem;
+        }
+
+        .verify-guidelines h4 {
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--secondary, #FFA2F0);
+            margin: 0 0 0.75rem;
+        }
+
+        .verify-guidelines ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.55rem;
+            margin: 0;
+            padding: 0;
+        }
+
+        .verify-guidelines li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.6rem;
+            font-size: 0.88rem;
+            color: var(--gray-300, #d4d4d4);
+            line-height: 1.4;
+        }
+
+        .verify-guidelines li svg {
+            flex-shrink: 0;
+            margin-top: 0.15rem;
+            color: var(--success, #7CE16B);
+        }
+
+        .verify-guidelines li.verify-guideline-warn svg {
+            color: var(--warning, #F9CF58);
+        }
+
+        .verify-guidelines li strong {
+            color: var(--light, #FDFCF3);
+            font-weight: 600;
+        }
+
+        .verify-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .verify-field label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--light, #FDFCF3);
+            margin-bottom: 0.5rem;
+        }
+
+        .verify-field input[type="email"] {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 0.85rem 1rem;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-md, 12px);
+            color: var(--light, #FDFCF3);
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+        }
+
+        .verify-field input[type="email"]::placeholder {
+            color: var(--gray-500, #737373);
+        }
+
+        .verify-field input[type="email"]:focus {
+            outline: none;
+            border-color: var(--primary, #9D69CE);
+            background: rgba(157, 105, 206, 0.06);
+            box-shadow: 0 0 0 3px rgba(157, 105, 206, 0.15);
+        }
+
+        .verify-field input[type="email"].verify-input-error {
+            border-color: var(--error, #FD5E5E);
+        }
+
+        .verify-hint {
+            display: block;
+            font-size: 0.78rem;
+            color: var(--gray-500, #737373);
+            margin-top: 0.4rem;
+            line-height: 1.4;
+        }
+
+        .verify-error-msg {
+            display: none;
+            font-size: 0.78rem;
+            color: var(--error, #FD5E5E);
+            margin-top: 0.4rem;
+        }
+
+        .verify-error-msg.show {
+            display: block;
+        }
+
+        .verify-upload {
+            border: 1.5px dashed rgba(255, 255, 255, 0.15);
+            border-radius: var(--radius-lg, 16px);
+            background: rgba(255, 255, 255, 0.02);
+            transition: all 0.2s ease;
+        }
+
+        .verify-upload.verify-upload-dragover {
+            border-color: var(--primary, #9D69CE);
+            background: rgba(157, 105, 206, 0.08);
+        }
+
+        .verify-upload-empty {
+            padding: 1.75rem 1.25rem;
+            text-align: center;
+        }
+
+        .verify-upload-empty svg {
+            color: var(--gray-500, #737373);
+            margin-bottom: 0.5rem;
+        }
+
+        .verify-upload-empty p {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--light, #FDFCF3);
+            margin: 0 0 1rem;
+        }
+
+        .verify-upload-actions {
+            display: flex;
+            gap: 0.6rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .verify-upload-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.65rem 1.1rem;
+            border-radius: var(--radius-full, 9999px);
+            font-size: 0.85rem;
+            font-weight: 600;
+            font-family: inherit;
+            background: var(--gradient-main, linear-gradient(135deg, #9D69CE 0%, #FFA2F0 100%));
+            color: var(--dark, #0a0a0a);
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .verify-upload-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(157, 105, 206, 0.3);
+        }
+
+        .verify-upload-btn-secondary {
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--light, #FDFCF3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .verify-upload-btn-secondary:hover {
+            box-shadow: none;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .verify-upload-preview {
+            position: relative;
+            padding: 0.75rem;
+        }
+
+        .verify-upload-preview img {
+            width: 100%;
+            max-height: 220px;
+            object-fit: cover;
+            border-radius: var(--radius-md, 12px);
+            display: block;
+        }
+
+        .verify-upload-preview-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 0.6rem;
+            padding: 0 0.15rem;
+        }
+
+        .verify-upload-filename {
+            font-size: 0.8rem;
+            color: var(--gray-400, #a3a3a3);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            max-width: 70%;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .verify-upload-filename svg {
+            color: var(--success, #7CE16B);
+            flex-shrink: 0;
+        }
+
+        .verify-upload-remove {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--error, #FD5E5E);
+            background: none;
+            border: none;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .verify-upload-remove:hover {
+            text-decoration: underline;
+        }
+
+        .verify-submit {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            width: 100%;
+            padding: 1rem;
+            background: var(--gradient-main, linear-gradient(135deg, #9D69CE 0%, #FFA2F0 100%));
+            border-radius: var(--radius-full, 9999px);
+            border: none;
+            cursor: pointer;
+            color: var(--dark, #0a0a0a);
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 700;
+            box-shadow: 0 4px 15px rgba(157, 105, 206, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .verify-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(157, 105, 206, 0.4);
+        }
+
+        .verify-submit:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .verify-security-note {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            font-size: 0.78rem;
+            color: var(--gray-500, #737373);
+            line-height: 1.5;
+            margin: -0.4rem 0 0;
+        }
+
+        .verify-security-note svg {
+            flex-shrink: 0;
+            margin-top: 0.15rem;
+            color: var(--warning, #F9CF58);
+        }
+
+        .verify-success {
+            text-align: center;
+            padding: 1rem 0 0.5rem;
+        }
+
+        .verify-success-icon {
+            width: 72px;
+            height: 72px;
+            margin: 0 auto 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius-full, 9999px);
+            background: rgba(124, 225, 107, 0.15);
+            color: var(--success, #7CE16B);
+        }
+
+        .verify-success h3 {
+            font-size: 1.35rem;
+            font-weight: 700;
+            margin: 0 0 0.6rem;
+        }
+
+        .verify-success p {
+            font-size: 0.95rem;
+            color: var(--gray-400, #a3a3a3);
+            line-height: 1.6;
+            margin: 0 0 1.75rem;
+        }
+
+        .verify-done-btn {
+            display: inline-flex;
+            padding: 0.85rem 2rem;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-full, 9999px);
+            color: var(--light, #FDFCF3);
+            font-family: inherit;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .verify-done-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        @media (max-width: 640px) {
+            .verify-modal {
+                padding: 1.5rem;
+            }
+
+            .verify-bar-text span {
+                display: none;
+            }
+        }
+    </style>
 </head>
 <body class="contact-page">
     <!-- Animated Background -->
@@ -122,6 +650,174 @@
         </div>
     </section>
 
+    <!-- Identity Verification Bar -->
+    <section class="verify-section">
+        <div class="verify-container">
+            <button type="button" class="verify-bar" id="verifyTrigger">
+                <span class="verify-bar-icon">
+                    <svg width="22" height="22" viewBox="0 0 32 32" fill="none">
+                        <defs>
+                            <linearGradient id="verifyBarGrad" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+                                <stop offset="0%" stop-color="#9D69CE"/>
+                                <stop offset="100%" stop-color="#FFA2F0"/>
+                            </linearGradient>
+                        </defs>
+                        <rect x="4" y="4" width="24" height="24" rx="8" fill="url(#verifyBarGrad)"/>
+                        <rect x="4" y="4" width="24" height="24" rx="8" fill="url(#verifyBarGrad)" transform="rotate(22.5 16 16)"/>
+                        <path d="M10 16.5l4 4 8-9" stroke="#0a0a0a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </span>
+                <span class="verify-bar-text">
+                    <strong>Request Identity Verification</strong>
+                    <span>Earn a verified badge on your profile</span>
+                </span>
+                <span class="verify-bar-arrow">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 18l6-6-6-6"/>
+                    </svg>
+                </span>
+            </button>
+        </div>
+    </section>
+
+    <!-- Identity Verification Modal -->
+    <div class="verify-modal-overlay" id="verifyModalOverlay">
+        <div class="verify-modal" role="dialog" aria-modal="true" aria-labelledby="verifyModalTitle">
+            <button type="button" class="verify-modal-close" id="verifyModalClose" aria-label="Close">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <path d="M18 6L6 18M6 6l12 12"/>
+                </svg>
+            </button>
+
+            <!-- Form state -->
+            <form id="verifyForm" class="verify-form">
+                <div class="verify-modal-header">
+                    <div class="verify-modal-badge">
+                        <svg width="42" height="42" viewBox="0 0 32 32" fill="none">
+                            <defs>
+                                <linearGradient id="verifyBadgeGrad" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+                                    <stop offset="0%" stop-color="#9D69CE"/>
+                                    <stop offset="100%" stop-color="#FFA2F0"/>
+                                </linearGradient>
+                            </defs>
+                            <rect x="4" y="4" width="24" height="24" rx="8" fill="url(#verifyBadgeGrad)"/>
+                            <rect x="4" y="4" width="24" height="24" rx="8" fill="url(#verifyBadgeGrad)" transform="rotate(22.5 16 16)"/>
+                            <path d="M10 16.5l4 4 8-9" stroke="#0a0a0a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h2 id="verifyModalTitle">Verify Your Identity</h2>
+                    <p>Get the verified badge and build extra trust in the human economy.</p>
+                </div>
+
+                <div class="verify-guidelines">
+                    <h4>Before you start</h4>
+                    <ul>
+                        <li>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+                            Use the <strong>same email</strong> you signed up to Pipoll with
+                        </li>
+                        <li>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+                            <strong>Passport or national ID only</strong> — driver's licenses are not accepted
+                        </li>
+                        <li>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+                            Take the photo in <strong>natural light</strong>, sharp and in focus — no blur or glare
+                        </li>
+                        <li class="verify-guideline-warn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+                            All four corners and every detail must be clearly readable
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="verify-field">
+                    <label for="verifyEmail">Account email</label>
+                    <input type="email" id="verifyEmail" name="verifyEmail" placeholder="you@email.com" autocomplete="email" required>
+                    <span class="verify-error-msg" id="verifyEmailError">Enter the email you used to create your account.</span>
+                    <span class="verify-hint">Must match the email used to create your Pipoll account.</span>
+                </div>
+
+                <div class="verify-field">
+                    <label>Identity document</label>
+
+                    <div class="verify-upload" id="verifyUpload">
+                        <input type="file" id="verifyFileCamera" accept="image/*" capture="environment" hidden>
+                        <input type="file" id="verifyFileLibrary" accept="image/*" hidden>
+
+                        <div class="verify-upload-empty" id="verifyUploadEmpty">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="2" y="5" width="20" height="15" rx="2"/>
+                                <path d="M2 9h20"/>
+                                <circle cx="8" cy="14" r="1.5"/>
+                                <path d="M12 14h6"/>
+                            </svg>
+                            <p>Passport or National ID</p>
+                            <div class="verify-upload-actions">
+                                <button type="button" class="verify-upload-btn" id="verifyTakePhoto">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                                        <circle cx="12" cy="13" r="4"/>
+                                    </svg>
+                                    Take Photo
+                                </button>
+                                <button type="button" class="verify-upload-btn verify-upload-btn-secondary" id="verifyChooseFile">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                        <polyline points="17 8 12 3 7 8"/>
+                                        <line x1="12" y1="3" x2="12" y2="15"/>
+                                    </svg>
+                                    Upload from Library
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="verify-upload-preview" id="verifyUploadPreview" hidden>
+                            <img id="verifyPreviewImg" alt="ID preview">
+                            <div class="verify-upload-preview-footer">
+                                <span class="verify-upload-filename" id="verifyUploadFilename">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+                                    <span></span>
+                                </span>
+                                <button type="button" class="verify-upload-remove" id="verifyRemoveFile">Remove</button>
+                            </div>
+                        </div>
+                    </div>
+                    <span class="verify-error-msg" id="verifyUploadError"></span>
+                    <span class="verify-hint">JPG or PNG, max 10MB. Driver's licenses will be rejected.</span>
+                </div>
+
+                <button type="submit" class="verify-submit" id="verifySubmitBtn">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 6l-10 7L2 6"/>
+                        <rect x="2" y="4" width="20" height="16" rx="2"/>
+                    </svg>
+                    Submit for Verification
+                </button>
+
+                <p class="verify-security-note">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M12 8v4M12 16h.01"/>
+                    </svg>
+                    This opens your email app addressed to hello@pipoll.live. Email links can't attach files automatically, so your photo will download to your device — just drag it into the message before sending.
+                </p>
+            </form>
+
+            <!-- Success state -->
+            <div class="verify-success" id="verifySuccess" hidden>
+                <div class="verify-success-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 6L9 17l-5-5"/>
+                    </svg>
+                </div>
+                <h3>Almost there!</h3>
+                <p>Your email app should now be open with a message to hello@pipoll.live. We've also downloaded your ID photo — attach it to that email, then hit send.</p>
+                <button type="button" class="verify-done-btn" id="verifyDoneBtn">Done</button>
+            </div>
+        </div>
+    </div>
+
     <!-- FAQ Section -->
     <section class="faq-section">
         <div class="faq-container">
@@ -212,5 +908,183 @@
     </footer>
 
     <script src="script.js"></script>
+
+    <!-- Identity Verification: modal behavior -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const trigger = document.getElementById('verifyTrigger');
+            const overlay = document.getElementById('verifyModalOverlay');
+            const closeBtn = document.getElementById('verifyModalClose');
+            const doneBtn = document.getElementById('verifyDoneBtn');
+
+            const form = document.getElementById('verifyForm');
+            const successPanel = document.getElementById('verifySuccess');
+
+            const emailInput = document.getElementById('verifyEmail');
+            const emailError = document.getElementById('verifyEmailError');
+
+            const uploadZone = document.getElementById('verifyUpload');
+            const uploadEmpty = document.getElementById('verifyUploadEmpty');
+            const uploadPreview = document.getElementById('verifyUploadPreview');
+            const previewImg = document.getElementById('verifyPreviewImg');
+            const previewFilename = document.getElementById('verifyUploadFilename');
+            const removeFileBtn = document.getElementById('verifyRemoveFile');
+            const cameraInput = document.getElementById('verifyFileCamera');
+            const libraryInput = document.getElementById('verifyFileLibrary');
+            const takePhotoBtn = document.getElementById('verifyTakePhoto');
+            const chooseFileBtn = document.getElementById('verifyChooseFile');
+            const uploadError = document.getElementById('verifyUploadError');
+            const submitBtn = document.getElementById('verifySubmitBtn');
+
+            let selectedFile = null;
+
+            function openModal() {
+                overlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeModal() {
+                overlay.classList.remove('active');
+                document.body.style.overflow = '';
+                setTimeout(resetModal, 300);
+            }
+
+            function resetModal() {
+                form.hidden = false;
+                successPanel.hidden = true;
+                form.reset();
+                clearFile();
+                emailInput.classList.remove('verify-input-error');
+                emailError.classList.remove('show');
+            }
+
+            function clearFile() {
+                selectedFile = null;
+                cameraInput.value = '';
+                libraryInput.value = '';
+                uploadEmpty.hidden = false;
+                uploadPreview.hidden = true;
+                uploadZone.classList.remove('verify-upload-dragover');
+                uploadError.classList.remove('show');
+            }
+
+            function handleFile(file) {
+                if (!file) return;
+                if (!file.type.startsWith('image/')) {
+                    uploadError.textContent = 'Please upload an image file (JPG or PNG).';
+                    uploadError.classList.add('show');
+                    return;
+                }
+                if (file.size > 10 * 1024 * 1024) {
+                    uploadError.textContent = 'File is too large. Max size is 10MB.';
+                    uploadError.classList.add('show');
+                    return;
+                }
+                uploadError.classList.remove('show');
+                selectedFile = file;
+
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    previewImg.src = e.target.result;
+                    previewFilename.querySelector('span').textContent = file.name;
+                    uploadEmpty.hidden = true;
+                    uploadPreview.hidden = false;
+                };
+                reader.readAsDataURL(file);
+            }
+
+            if (trigger) trigger.addEventListener('click', openModal);
+            if (closeBtn) closeBtn.addEventListener('click', closeModal);
+            if (doneBtn) doneBtn.addEventListener('click', closeModal);
+
+            if (overlay) {
+                overlay.addEventListener('click', (e) => {
+                    if (e.target === overlay) closeModal();
+                });
+            }
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && overlay.classList.contains('active')) closeModal();
+            });
+
+            if (takePhotoBtn) takePhotoBtn.addEventListener('click', () => cameraInput.click());
+            if (chooseFileBtn) chooseFileBtn.addEventListener('click', () => libraryInput.click());
+
+            if (cameraInput) cameraInput.addEventListener('change', (e) => handleFile(e.target.files[0]));
+            if (libraryInput) libraryInput.addEventListener('change', (e) => handleFile(e.target.files[0]));
+
+            if (removeFileBtn) removeFileBtn.addEventListener('click', clearFile);
+
+            ['dragenter', 'dragover'].forEach(evt => {
+                uploadZone.addEventListener(evt, (e) => {
+                    e.preventDefault();
+                    uploadZone.classList.add('verify-upload-dragover');
+                });
+            });
+
+            ['dragleave', 'drop'].forEach(evt => {
+                uploadZone.addEventListener(evt, (e) => {
+                    e.preventDefault();
+                    uploadZone.classList.remove('verify-upload-dragover');
+                });
+            });
+
+            uploadZone.addEventListener('drop', (e) => {
+                const file = e.dataTransfer.files[0];
+                handleFile(file);
+            });
+
+            if (form) {
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+
+                    let valid = true;
+                    const emailValue = emailInput.value.trim();
+                    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+                    if (!emailPattern.test(emailValue)) {
+                        emailInput.classList.add('verify-input-error');
+                        emailError.classList.add('show');
+                        valid = false;
+                    } else {
+                        emailInput.classList.remove('verify-input-error');
+                        emailError.classList.remove('show');
+                    }
+
+                    if (!selectedFile) {
+                        uploadError.textContent = 'Please add a photo of your passport or national ID.';
+                        uploadError.classList.add('show');
+                        valid = false;
+                    }
+
+                    if (!valid) return;
+
+                    // mailto: links have no way to attach files, so we download the
+                    // photo locally (for the user to attach by hand) and open the
+                    // user's mail client with the account email as the subject line.
+                    const downloadUrl = URL.createObjectURL(selectedFile);
+                    const tempLink = document.createElement('a');
+                    tempLink.href = downloadUrl;
+                    tempLink.download = selectedFile.name || 'id-document';
+                    document.body.appendChild(tempLink);
+                    tempLink.click();
+                    document.body.removeChild(tempLink);
+                    URL.revokeObjectURL(downloadUrl);
+
+                    const subject = encodeURIComponent(emailValue);
+                    const body = encodeURIComponent(
+                        'Identity verification request\n\n' +
+                        'Account email: ' + emailValue + '\n' +
+                        'Document file: ' + selectedFile.name + '\n\n' +
+                        'The ID photo was just downloaded to my device — attached below.'
+                    );
+                    window.location.href = 'mailto:hello@pipoll.live?subject=' + subject + '&body=' + body;
+
+                    form.hidden = true;
+                    successPanel.hidden = false;
+                });
+            }
+        });
+    </script>
 </body>
 </html>
