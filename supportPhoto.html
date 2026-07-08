@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Why didn't my photo verify? Common photo verification issues on Pipoll and how to fix them.">
+    <meta name="theme-color" content="#9D69CE">
+    <title>Photo Verification Help - Pipoll</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.cdnfonts.com/css/garet" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <style>
+        /* Page-specific tweaks — everything else comes from styles.css */
+        .verify-note {
+            max-width: 700px;
+            margin: 0 auto;
+            text-align: center;
+            font-size: 1.1rem;
+            color: var(--gray-300);
+            line-height: 1.8;
+        }
+        .verify-note strong {
+            color: var(--light);
+            font-weight: 600;
+        }
+        .faq-answer .fix-pass {
+            color: var(--success);
+            font-weight: 600;
+        }
+        .faq-answer .fix-fail {
+            color: var(--error);
+            font-weight: 600;
+        }
+        .section-header .section-sub {
+            margin: 1rem auto 0;
+            max-width: 560px;
+            font-size: 1.05rem;
+            color: var(--gray-400);
+            line-height: 1.7;
+        }
+        .footer-wordmark {
+            font-family: 'Garet', var(--font-main);
+            font-size: 2rem;
+            font-weight: 850;
+            letter-spacing: -0.02em;
+            color: var(--light);
+            line-height: 1;
+        }
+        .return-home-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            display: inline-flex;
+            align-items: center;
+            gap: .45rem;
+            padding: .55rem 1.1rem .55rem .85rem;
+            background: rgba(10,10,10,.75);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255,255,255,.1);
+            border-radius: var(--radius-full);
+            font-size: .82rem;
+            font-weight: 600;
+            color: var(--gray-300);
+            text-decoration: none;
+            transition: all .3s ease;
+            box-shadow: 0 4px 20px rgba(0,0,0,.35),
+                        inset 0 1px 0 rgba(255,255,255,.07);
+        }
+        .return-home-btn svg {
+            flex-shrink: 0;
+            color: var(--gray-400);
+            transition: transform .3s ease;
+        }
+        .return-home-btn:hover {
+            color: var(--light);
+            border-color: rgba(157,105,206,.35);
+            box-shadow: 0 4px 24px rgba(157,105,206,.2),
+                        inset 0 1px 0 rgba(255,255,255,.1);
+        }
+        .return-home-btn:hover svg {
+            transform: translateX(-3px);
+        }
+        @media (max-width: 640px) {
+            .verify-note {
+                font-size: 0.95rem;
+            }
+            .return-home-btn {
+                top: 14px;
+                left: 14px;
+                font-size: .75rem;
+                padding: .5rem .9rem .5rem .7rem;
+            }
+        }
+    </style>
+</head>
+<body class="contact-page">
+    <!-- Animated Background -->
+    <div class="bg-gradient">
+        <div class="bg-grid"></div>
+        <div class="bg-orb bg-orb-1"></div>
+        <div class="bg-orb bg-orb-2"></div>
+        <div class="bg-orb bg-orb-3"></div>
+    </div>
+
+    <!-- ── Return to home ── -->
+    <a href="https://pipoll.live" class="return-home-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"/>
+        </svg>
+        Return to Home
+    </a>
+
+    <!-- Hero -->
+    <section class="contact-hero">
+        <div class="contact-hero-content">
+            <span class="contact-hero-tag">Verification help</span>
+            <h1 class="contact-hero-title">Why didn't my <span class="gradient-text">photo verify?</span></h1>
+            <p class="contact-hero-subtitle">
+                Most failed checks are simple photo issues — not you doing anything wrong.
+                Check these first.
+            </p>
+        </div>
+    </section>
+
+    <!-- Photo Quality -->
+    <section class="how-it-works">
+        <div class="section-container">
+            <div class="section-header">
+                <span class="section-tag">The #1 cause</span>
+                <h2 class="section-title">📷 Photo quality</h2>
+                <p class="section-sub">Most failed checks come down to one of these four. Fix the photo, not the habit.</p>
+            </div>
+            <div class="steps-container">
+                <div class="step">
+                    <span class="step-number">01</span>
+                    <div class="step-content">
+                        <h3>Too dark</h3>
+                        <p>Turn on a light or move near a window. Dim photos are automatically rejected.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <span class="step-number">02</span>
+                    <div class="step-content">
+                        <h3>Blurry</h3>
+                        <p>Hold still a second before tapping. Motion blur hides the details we need.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <span class="step-number">03</span>
+                    <div class="step-content">
+                        <h3>Too close</h3>
+                        <p>A tight crop of fabric, skin, or a page could be anything. Step back and show context.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <span class="step-number">04</span>
+                    <div class="step-content">
+                        <h3>Wrong angle</h3>
+                        <p>Shoot the way the instruction says. It's written that way for a reason.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Not Enough Proof -->
+    <section class="manifesto">
+        <div class="section-container">
+            <div class="section-header">
+                <span class="section-tag">Framing</span>
+                <h2 class="section-title">🖼️ Not enough proof in frame</h2>
+                <p class="section-sub">The verifier needs to see the habit, not guess it.</p>
+            </div>
+            <p class="verify-note">
+                If your photo shows <strong>the room but not the activity</strong> — or
+                <strong>the object but not the place</strong> — it fails. <strong>Show both.</strong>
+            </p>
+        </div>
+    </section>
+
+    <!-- Always Fails -->
+    <section class="features">
+        <div class="section-container">
+            <div class="section-header">
+                <span class="section-tag">Zero exceptions</span>
+                <h2 class="section-title">📱 Things that always fail</h2>
+                <p class="section-sub">Rejected by design — every time, no matter how honest the attempt.</p>
+            </div>
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Photos of screens</h3>
+                    </div>
+                    <div class="faq-answer">
+                        <p>TV, laptop, tablet, another phone. Even showing something real.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Printed images</h3>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Photos of posters, prints, magazines, or book covers.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Apps instead of the real thing</h3>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Bible apps, e-readers, piano apps, online classes. Physical only.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Notes or messages held up to the camera</h3>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Don't — it counts against you.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Habit-Specific Fixes -->
+    <section class="faq-section">
+        <div class="faq-container">
+            <div class="faq-header section-header">
+                <span class="section-tag">Per habit</span>
+                <h2 class="section-title">✋ Quick fixes</h2>
+                <p class="section-sub">What a passing photo looks like, habit by habit.</p>
+            </div>
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>🏋️ Gym</h3>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Show the room, not just one dumbbell. <span class="fix-pass">Equipment + space + mirrors = pass.</span></p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>🧴 Skincare</h3>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Product on your skin or bottle open in frame. <span class="fix-fail">Hovering hand + closed bottle fails.</span></p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>🌱 Grass</h3>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Fingers actually in the grass, blades bending. <span class="fix-fail">Hovering fails. Artificial turf fails.</span></p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>📖 Bible / Read</h3>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Book must be open, close enough to read the page layout. <span class="fix-fail">Covers and Kindles fail.</span></p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>🎓 Class</h3>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Shoot from your seat — desk in front, board/screen ahead. <span class="fix-fail">Hallway or empty room fails.</span></p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>🎸 Instrument</h3>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Hand on the strings/keys, instrument in playing position. <span class="fix-fail">On the wall or in its case fails.</span></p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>🛏️ Bed</h3>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Whole bed in frame from the foot. Don't worry about wrinkles — real beds have them.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>⚽ Sport</h3>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Gear + court/field/poolside + you on it. <span class="fix-fail">Watching from the stands fails.</span></p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>🍳 Cook</h3>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Food mid-cooking, pan and stove visible. <span class="fix-fail">Plated delivery food fails.</span></p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>📚 Study</h3>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Open notebook or book with real writing, pen out. <span class="fix-fail">Laptop alone fails.</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Still Failing CTA -->
+    <section class="contact-cta">
+        <div class="contact-cta-container">
+            <span class="section-tag">One more try</span>
+            <h2 class="contact-cta-title">🔄 Still failing?</h2>
+            <p class="contact-cta-subtitle">
+                Retake once with more light and more context in frame. If a genuinely honest photo
+                keeps failing, that's on us, not you — report it and we'll review it.
+                Your streak matters to us too.
+            </p>
+            <a href="mailto:lifeline@pipoll.live?subject=Failed%20photo%20verification" class="btn-primary btn-large">Report a failed check</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <span class="footer-wordmark">Pipoll</span>
+                <p class="footer-tagline">The Human Economy.</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Pipoll. All rights reserved.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
