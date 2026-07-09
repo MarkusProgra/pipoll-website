@@ -31,25 +31,40 @@
                 <a href="index.html">Home</a>
                 <a href="blog.html">Blog</a>
                 <a href="contact.html">Contact</a>
-                <a href="chartTool/index.html" onclick="openGraphTool(event)">Graph Tool 🔒</a>
-                        <script>
-                            function openGraphTool(event) {
-                                event.preventDefault();
-                                const password = prompt("Enter password:");
-                                if (password === "pessi2026") {
-                                    window.location.href = "chartTool/index.html";
-                                } else if (password !== null) {
-                                    alert("Incorrect password.");
-                                }
-                            }
-                        </script>
-                <div class="nav-dropdown">
-                    <span class="dropdown-trigger">Legal ▾</span>
-                    <div class="dropdown-menu">
-                        <a href="terms.html">Terms &amp; Conditions</a>
-                        <a href="privacy.html">Privacy Policy</a>
-                    </div>
+            <div class="nav-dropdown">
+                <span class="dropdown-trigger">Admin ▾</span>
+                <div class="dropdown-menu">
+                    <a href="chartTool/index.html" onclick="openGraphTool(event)">Graph Tool 🔒</a>
+                    <a href="https://human-stock-6uoy0n.web.app/" onclick="openAutoHub(event)">Auto Hub 🔒</a>
                 </div>
+            </div>
+            <script>
+                function openGraphTool(event) {
+                    event.preventDefault();
+                    const password = prompt("Enter password:");
+                    if (password === "pessi2026") {
+                        window.location.href = "chartTool/index.html";
+                    } else if (password !== null) {
+                        alert("Incorrect password.");
+                    }
+                }
+                function openAutoHub(event) {
+                    event.preventDefault();
+                    const password = prompt("Enter password:");
+                    if (password === "pessi2026") {
+                        window.location.href = "https://human-stock-6uoy0n.web.app/";
+                    } else if (password !== null) {
+                        alert("Incorrect password.");
+                    }
+                }
+            </script>
+            <div class="nav-dropdown">
+                <span class="dropdown-trigger">Legal ▾</span>
+                <div class="dropdown-menu">
+                    <a href="terms.html">Terms &amp; Conditions</a>
+                    <a href="privacy.html">Privacy Policy</a>
+                </div>
+            </div>
             </div>
             <a href="#download" class="nav-cta">Start Investing</a>
             <button class="nav-toggle" aria-label="Menu">
@@ -65,13 +80,28 @@
         <a href="index.html">Home</a>
         <a href="blog.html">Blog</a>
         <a href="contact.html">Contact</a>
-        <a href="chartTool/index.html" onclick="openGraphTool(event)">Graph Tool 🔒</a>
+        <div class="mobile-dropdown">
+            <span class="mobile-dropdown-trigger">Admin ▾</span>
+            <div class="mobile-dropdown-menu">
+                <a href="chartTool/index.html" onclick="openGraphTool(event)">Graph Tool 🔒</a>
+                <a href="https://human-stock-6uoy0n.web.app/" onclick="openAutoHub(event)">Auto Hub 🔒</a>
+            </div>
+        </div>
         <script>
             function openGraphTool(event) {
                 event.preventDefault();
                 const password = prompt("Enter password:");
                 if (password === "pessi2026") {
                     window.location.href = "chartTool/index.html";
+                } else if (password !== null) {
+                    alert("Incorrect password.");
+                }
+            }
+            function openAutoHub(event) {
+                event.preventDefault();
+                const password = prompt("Enter password:");
+                if (password === "pessi2026") {
+                    window.location.href = "https://human-stock-6uoy0n.web.app/";
                 } else if (password !== null) {
                     alert("Incorrect password.");
                 }
